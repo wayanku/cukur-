@@ -706,8 +706,8 @@
             const { value: status } = await Swal.fire({ title: 'Status Hari Ini', input: 'radio', inputOptions: { 'Kerja': '✂️ Kerja', 'Libur': '⛔ Libur' }, inputValue: 'Kerja', background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24' });
             if(!status) return;
             if(status === 'Libur') {
-                const { value: reason } = await Swal.fire({ title: 'Alasan Libur', input: 'text', background: '#151a23', color: '#fff', confirmButtonColor: '#ef4444' });
-                if(reason) submitData({status: 'Libur', alasan_libur: reason, tanggal: getToday()});
+                const { value: reason } = await Swal.fire({ title: 'Alasan Libur', input: 'text', inputPlaceholder: 'Contoh: Sakit, Cuti, dll.', background: '#151a23', color: '#fff', confirmButtonColor: '#ef4444' });
+                if(reason) submitData({status: 'Libur', alasan_libur: reason, tanggal: getNowTimestamp()});
             } else { showWorkInput(); }
         }
 
@@ -734,7 +734,7 @@
             if(result.isConfirmed) {
                 const d = result.value;
                 const total = (d.db * p.db) + (d.dk * p.dk) + (d.ab * p.ab) + (d.ak * p.ak);
-                submitData({ status: 'Kerja', tanggal: getToday(), barber_name: d.barber, layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}), total_uang: total, pengeluaran: d.exp, desc_pengeluaran: d.ket });
+                submitData({ status: 'Kerja', tanggal: getNowTimestamp(), barber_name: d.barber, layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}), total_uang: total, pengeluaran: d.exp, desc_pengeluaran: d.ket });
             }
         }
 
@@ -745,7 +745,12 @@
                 if(d.result === 'success') { Swal.fire({ icon:'success', title:'Berhasil', background:'#151a23', color:'#fff', timer:1500, showConfirmButton:false }); fetchData(); } else throw new Error(d.error);
             }).catch(e => Swal.fire({ icon:'error', title:'Error', background:'#151a23', color:'#fff'}));
         }
-        function getToday() { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`; }
+        function getNowTimestamp() {
+            const d = new Date();
+            const date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+            const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+            return `${date} ${time}`;
+        }
     </script>
 </body>
 </html>
