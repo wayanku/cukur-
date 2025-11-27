@@ -32,11 +32,10 @@
             background-color: var(--bg-dark);
             color: var(--text-main);
             margin: 0;
-            padding-bottom: 90px; /* Space for navbar */
+            padding-bottom: 90px;
             overflow-x: hidden;
         }
 
-        /* --- UI COMPONENTS --- */
         .container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 100vh; position: relative; }
         
         /* Header */
@@ -58,7 +57,6 @@
             overflow: hidden;
         }
         
-        /* Dashboard Hero */
         .hero-card { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--border); position: relative; }
         .hero-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); opacity: 0.15; animation: pulse 5s infinite; }
         
@@ -214,10 +212,6 @@
                 <textarea id="set_staff" class="input-dark" rows="3"></textarea>
                 <button onclick="saveSettings()" style="width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">SIMPAN DATA</button>
             </div>
-            
-            <div style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-top:20px;">
-                Cukur++ v3.0 Platinum<br>Connected to Google Sheets
-            </div>
         </div>
 
     </div>
@@ -235,10 +229,9 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // --- CONFIGURATION ---
-        // SAYA SUDAH MASUKKAN LINK ANDA DI SINI
-        const ENDPOINT = "https://script.google.com/macros/s/AKfycbx76UHbdu1ms-YwZsbyDAmDSBvz5bxLi5I86edLrPXHt0n7E-dYMoTHr_UCP4MilUTvYg/exec";
+        // SAYA SUDAH UPDATE URL DI SINI:
+        const ENDPOINT = "https://script.google.com/macros/s/AKfycbxLe2gUgO0JfEs5fk2fElFYh26S_C8ZghLtlUiRriSnrTVUeesMVQfxW2mxyYPtzTxT/exec";
         
-        // --- APP STATE ---
         let rawData = [];
         let chartInstance = null;
         let settings = {
@@ -247,7 +240,6 @@
             staff: ["Owner", "Barber 1"]
         };
 
-        // --- INIT ---
         window.onload = () => {
             loadLocalSettings();
             fetchData();
@@ -257,7 +249,6 @@
             const s = localStorage.getItem('cukur_settings');
             if(s) settings = JSON.parse(s);
             
-            // Populate Inputs
             document.getElementById('set_db').value = settings.prices.db;
             document.getElementById('set_dk').value = settings.prices.dk;
             document.getElementById('set_ab').value = settings.prices.ab;
@@ -276,8 +267,7 @@
             
             localStorage.setItem('cukur_settings', JSON.stringify(settings));
             Swal.fire({
-                icon: 'success',
-                title: 'Tersimpan!',
+                icon: 'success', title: 'Tersimpan!',
                 background: '#151a23', color: '#fff',
                 confirmButtonColor: '#fbbf24',
                 toast: true, position: 'top-end', showConfirmButton: false, timer: 1500
@@ -295,7 +285,7 @@
             })
             .catch(err => {
                 console.error(err);
-                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Cek koneksi internet'});
+                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Cek koneksi internet', background:'#151a23', color:'#fff'});
                 document.getElementById('loader').style.display = 'none';
             });
         }
@@ -308,13 +298,10 @@
         function fmtMoney(n) { return "Rp " + parseInt(n).toLocaleString('id-ID'); }
 
         function renderDashboard() {
-            // Filter This Month
             const now = new Date();
             const curM = now.getMonth() + 1;
             const curY = now.getFullYear();
             
-            // Backend "BarberOS Pro" uses keys: tgl, stat, masuk, keluar, etc.
-            // Adjusting based on previous script logic
             const thisMonthData = rawData.filter(d => d.bln == curM && d.thn == curY);
             
             let inc = 0, exp = 0;
@@ -328,7 +315,6 @@
             const profit = inc - exp;
             const targetPct = Math.min(100, Math.round((profit / settings.target) * 100));
 
-            // Animate Numbers
             document.getElementById('disp_profit').innerText = fmtMoney(profit);
             document.getElementById('disp_income').innerText = fmtMoney(inc);
             document.getElementById('disp_expense').innerText = fmtMoney(exp);
@@ -339,8 +325,6 @@
 
         function renderChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
-            
-            // Get last 7 days logic
             const labels = [];
             const dataPts = [];
             
@@ -348,14 +332,10 @@
                 const d = new Date();
                 d.setDate(d.getDate() - i);
                 const dayStr = d.getDate() + '/' + (d.getMonth()+1);
-                
-                // Simple matcher (assuming tgl format d/m/yyyy or close)
                 const matchStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
                 
-                // Sum income for that day
                 let daySum = 0;
                 rawData.forEach(r => {
-                    // Clean format issues (remove quotes etc)
                     if(r.tgl.includes(matchStr) && r.stat !== 'Libur') {
                         daySum += parseInt(r.masuk);
                     }
@@ -398,7 +378,6 @@
             const container = document.getElementById('history-container');
             container.innerHTML = '';
             
-            // Reverse copy (newest first) & limit 20
             const list = [...rawData].reverse().slice(0, 20);
             
             if(list.length === 0) {
@@ -440,7 +419,6 @@
             });
         }
 
-        // --- NAVIGATION ---
         window.switchPage = (pageId, el) => {
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
             document.getElementById('p-'+pageId).classList.remove('hidden');
@@ -449,9 +427,7 @@
             if(el) el.classList.add('active');
         }
 
-        // --- INPUT FLOW ---
         async function openInput() {
-            // Step 1: Status
             const { value: status } = await Swal.fire({
                 title: 'Status Hari Ini',
                 input: 'radio',
@@ -553,7 +529,7 @@
             .then(d => {
                 if(d.result === 'success') {
                     Swal.fire({ icon:'success', title:'Berhasil', background:'#151a23', color:'#fff', timer:1500, showConfirmButton:false });
-                    fetchData(); // Refresh
+                    fetchData();
                 } else {
                     throw new Error(d.error);
                 }
