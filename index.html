@@ -69,18 +69,47 @@
         .income { color: var(--success); }
         .expense { color: var(--danger); }
 
+        /* CALENDAR STYLES (NEW) */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .cal-day-name { text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; padding-bottom: 10px; }
+        .cal-day {
+            aspect-ratio: 1; background: var(--bg-card); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.9rem; cursor: pointer; position: relative; border: 1px solid transparent;
+            transition: 0.2s;
+        }
+        .cal-day:hover { background: #1f2937; border-color: var(--primary); }
+        .cal-day.today { border: 1px solid var(--primary); color: var(--primary); font-weight: 700; }
+        .cal-dot { width: 6px; height: 6px; border-radius: 50%; position: absolute; bottom: 6px; }
+        .cal-dot.green { background: var(--success); box-shadow: 0 0 5px var(--success); }
+        .cal-dot.red { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
+
+        /* DETAIL MODAL (NEW) */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-card {
+            background: #151a23; width: 100%; max-width: 400px; border-radius: 20px; border: 1px solid var(--border);
+            padding: 25px; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .detail-row:last-child { border: none; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-work { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge-off { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+
         /* Buttons */
         .btn-fab {
             position: fixed; bottom: 100px; right: 20px;
             width: 60px; height: 60px;
-            background: var(--primary);
-            color: #000;
-            border-radius: 50%;
+            background: var(--primary); color: #000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 0 20px var(--primary-glow);
-            border: none; cursor: pointer; z-index: 100;
-            transition: transform 0.2s;
+            font-size: 2rem; box-shadow: 0 0 20px var(--primary-glow);
+            border: none; cursor: pointer; z-index: 100; transition: transform 0.2s;
         }
         .btn-fab:active { transform: scale(0.9); }
 
@@ -88,25 +117,20 @@
         .nav-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 460px;
-            background: rgba(25, 30, 40, 0.9);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-            border: 1px solid var(--border);
-            height: 65px;
+            background: rgba(25, 30, 40, 0.9); backdrop-filter: blur(15px);
+            border-radius: 25px; border: 1px solid var(--border); height: 65px;
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 99;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            z-index: 99; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
         .nav-item { color: var(--text-muted); font-size: 1.5rem; padding: 10px; transition: 0.3s; position: relative; }
         .nav-item.active { color: var(--primary); transform: translateY(-5px); }
         .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: var(--primary); border-radius: 50%; }
 
-        /* History List */
+        /* Lists & Inputs */
         .list-group { display: flex; flex-direction: column; gap: 10px; }
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); }
         .list-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 15px; }
         
-        /* Settings Inputs */
         .input-dark {
             width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border);
             padding: 12px; border-radius: 10px; color: white; font-family: inherit; margin-bottom: 10px;
@@ -119,13 +143,11 @@
         .hidden { display: none; }
         .fade-in { animation: fadeIn 0.4s ease forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.1; } 50% { transform: scale(1.5); opacity: 0.2; } 100% { transform: scale(1); opacity: 0.1; } }
-
+        
         /* Loader */
         #loader { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .loader-spin { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
     </style>
 </head>
 <body>
@@ -147,27 +169,17 @@
 
         <!-- PAGE: HOME -->
         <div id="p-home" class="page fade-in">
-            <!-- Hero Card -->
             <div class="glass-card hero-card">
                 <div class="balance-label">Profit Bulan Ini</div>
                 <div class="balance-amount" id="disp_profit">Rp 0</div>
                 <div style="font-size:0.8rem; color: var(--success); display:flex; align-items:center; gap:5px;">
                     <i class='bx bx-trending-up'></i> <span id="disp_target_pct">0%</span> dari Target
                 </div>
-
                 <div class="stats-row">
-                    <div class="stat-item">
-                        <h4>Pemasukan</h4>
-                        <p class="income" id="disp_income">Rp 0</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>Pengeluaran</h4>
-                        <p class="expense" id="disp_expense">Rp 0</p>
-                    </div>
+                    <div class="stat-item"><h4>Pemasukan</h4><p class="income" id="disp_income">Rp 0</p></div>
+                    <div class="stat-item"><h4>Pengeluaran</h4><p class="expense" id="disp_expense">Rp 0</p></div>
                 </div>
             </div>
-
-            <!-- Chart -->
             <div class="glass-card">
                 <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
                     <span style="font-weight:700;">Tren Mingguan</span>
@@ -175,45 +187,62 @@
                 </div>
                 <canvas id="mainChart" height="200"></canvas>
             </div>
-            
             <div style="height:20px"></div>
+        </div>
+
+        <!-- PAGE: CALENDAR (NEW) -->
+        <div id="p-calendar" class="page hidden fade-in">
+            <div class="cal-header">
+                <button onclick="changeCalMonth(-1)" style="background:none; border:none; color:white; font-size:1.5rem;"><i class='bx bx-chevron-left'></i></button>
+                <h3 id="calTitle" style="margin:0"></h3>
+                <button onclick="changeCalMonth(1)" style="background:none; border:none; color:white; font-size:1.5rem;"><i class='bx bx-chevron-right'></i></button>
+            </div>
+            <div class="cal-grid" id="calendarGrid">
+                <!-- Generated by JS -->
+            </div>
+            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:var(--text-muted);">
+                <span style="color:var(--success)">●</span> Kerja &nbsp; <span style="color:var(--danger)">●</span> Libur
+            </div>
         </div>
 
         <!-- PAGE: HISTORY -->
         <div id="p-history" class="page hidden fade-in">
             <h2 style="margin-bottom:20px;">Riwayat Transaksi</h2>
-            <div id="history-container" class="list-group">
-                <!-- Data goes here -->
-            </div>
+            <div id="history-container" class="list-group"></div>
         </div>
 
         <!-- PAGE: SETTINGS -->
         <div id="p-settings" class="page hidden fade-in">
             <h2 style="margin-bottom:20px;">Pengaturan Toko</h2>
-            
             <div class="glass-card">
                 <h4 style="margin-top:0; color:var(--primary); margin-bottom:15px;">Harga Layanan</h4>
-                <label class="label-dark">Dewasa Biasa</label>
-                <input type="number" id="set_db" class="input-dark">
-                <label class="label-dark">Dewasa Keramas</label>
-                <input type="number" id="set_dk" class="input-dark">
-                <label class="label-dark">Anak Biasa</label>
-                <input type="number" id="set_ab" class="input-dark">
-                <label class="label-dark">Anak Keramas</label>
-                <input type="number" id="set_ak" class="input-dark">
+                <label class="label-dark">Dewasa Biasa</label><input type="number" id="set_db" class="input-dark">
+                <label class="label-dark">Dewasa Keramas</label><input type="number" id="set_dk" class="input-dark">
+                <label class="label-dark">Anak Biasa</label><input type="number" id="set_ab" class="input-dark">
+                <label class="label-dark">Anak Keramas</label><input type="number" id="set_ak" class="input-dark">
                 <button onclick="saveSettings()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:700; cursor:pointer;">SIMPAN HARGA</button>
             </div>
-
             <div class="glass-card">
                 <h4 style="margin-top:0; color:var(--accent); margin-bottom:15px;">Manajemen</h4>
-                <label class="label-dark">Target Omzet Bulanan</label>
-                <input type="number" id="set_target" class="input-dark">
-                <label class="label-dark">Daftar Barber (Pisah koma)</label>
-                <textarea id="set_staff" class="input-dark" rows="3"></textarea>
+                <label class="label-dark">Target Omzet Bulanan</label><input type="number" id="set_target" class="input-dark">
+                <label class="label-dark">Daftar Barber (Pisah koma)</label><textarea id="set_staff" class="input-dark" rows="3"></textarea>
                 <button onclick="saveSettings()" style="width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">SIMPAN DATA</button>
             </div>
         </div>
 
+    </div>
+
+    <!-- DETAIL MODAL -->
+    <div id="detailModal" class="modal-overlay" onclick="closeDetailModal(event)">
+        <div class="modal-card" id="modalCard">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 id="modalDate" style="margin:0; color:var(--primary);">Tanggal</h3>
+                <i class='bx bx-x' style="font-size:1.5rem; cursor:pointer;" onclick="document.getElementById('detailModal').style.display='none'"></i>
+            </div>
+            <div id="modalContent">
+                <!-- Content Injected -->
+            </div>
+        </div>
     </div>
 
     <!-- FLOATING ACTION BUTTON -->
@@ -222,6 +251,7 @@
     <!-- BOTTOM NAV -->
     <nav class="nav-bar">
         <div class="nav-item active" onclick="switchPage('home', this)"><i class='bx bxs-dashboard'></i></div>
+        <div class="nav-item" onclick="switchPage('calendar', this)"><i class='bx bxs-calendar'></i></div>
         <div class="nav-item" onclick="switchPage('history', this)"><i class='bx bx-time-five'></i></div>
         <div class="nav-item" onclick="switchPage('settings', this)"><i class='bx bxs-cog'></i></div>
     </nav>
@@ -229,11 +259,11 @@
     <!-- JAVASCRIPT LOGIC -->
     <script>
         // --- CONFIGURATION ---
-        // SAYA SUDAH UPDATE URL DI SINI:
         const ENDPOINT = "https://script.google.com/macros/s/AKfycbxLe2gUgO0JfEs5fk2fElFYh26S_C8ZghLtlUiRriSnrTVUeesMVQfxW2mxyYPtzTxT/exec";
         
         let rawData = [];
         let chartInstance = null;
+        let calDate = new Date();
         let settings = {
             prices: { db: 25000, dk: 30000, ab: 15000, ak: 20000 },
             target: 10000000,
@@ -248,7 +278,6 @@
         function loadLocalSettings() {
             const s = localStorage.getItem('cukur_settings');
             if(s) settings = JSON.parse(s);
-            
             document.getElementById('set_db').value = settings.prices.db;
             document.getElementById('set_dk').value = settings.prices.dk;
             document.getElementById('set_ab').value = settings.prices.ab;
@@ -264,14 +293,8 @@
             settings.prices.ak = parseInt(document.getElementById('set_ak').value) || 0;
             settings.target = parseInt(document.getElementById('set_target').value) || 0;
             settings.staff = document.getElementById('set_staff').value.split(',').map(s=>s.trim());
-            
             localStorage.setItem('cukur_settings', JSON.stringify(settings));
-            Swal.fire({
-                icon: 'success', title: 'Tersimpan!',
-                background: '#151a23', color: '#fff',
-                confirmButtonColor: '#fbbf24',
-                toast: true, position: 'top-end', showConfirmButton: false, timer: 1500
-            });
+            Swal.fire({ icon: 'success', title: 'Tersimpan!', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, background:'#151a23', color:'#fff' });
             refreshUI();
         }
 
@@ -284,26 +307,23 @@
                 refreshUI();
             })
             .catch(err => {
-                console.error(err);
-                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Cek koneksi internet', background:'#151a23', color:'#fff'});
+                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', background:'#151a23', color:'#fff'});
                 document.getElementById('loader').style.display = 'none';
             });
         }
 
         function refreshUI() {
             renderDashboard();
+            renderCalendar();
             renderHistory();
         }
 
         function fmtMoney(n) { return "Rp " + parseInt(n).toLocaleString('id-ID'); }
 
+        // --- DASHBOARD ---
         function renderDashboard() {
             const now = new Date();
-            const curM = now.getMonth() + 1;
-            const curY = now.getFullYear();
-            
-            const thisMonthData = rawData.filter(d => d.bln == curM && d.thn == curY);
-            
+            const thisMonthData = rawData.filter(d => d.bln == (now.getMonth() + 1) && d.thn == now.getFullYear());
             let inc = 0, exp = 0;
             thisMonthData.forEach(d => {
                 if(d.stat !== 'Libur') {
@@ -311,7 +331,6 @@
                     exp += parseInt(d.keluar) || 0;
                 }
             });
-
             const profit = inc - exp;
             const targetPct = Math.min(100, Math.round((profit / settings.target) * 100));
 
@@ -319,102 +338,182 @@
             document.getElementById('disp_income').innerText = fmtMoney(inc);
             document.getElementById('disp_expense').innerText = fmtMoney(exp);
             document.getElementById('disp_target_pct').innerText = targetPct + "%";
-
             renderChart();
         }
 
         function renderChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
-            const labels = [];
-            const dataPts = [];
-            
+            const labels = [], dataPts = [];
             for(let i=6; i>=0; i--) {
                 const d = new Date();
                 d.setDate(d.getDate() - i);
                 const dayStr = d.getDate() + '/' + (d.getMonth()+1);
                 const matchStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-                
                 let daySum = 0;
                 rawData.forEach(r => {
-                    if(r.tgl.includes(matchStr) && r.stat !== 'Libur') {
-                        daySum += parseInt(r.masuk);
-                    }
+                    if(r.tgl.includes(matchStr) && r.stat !== 'Libur') daySum += parseInt(r.masuk);
                 });
-                
                 labels.push(dayStr);
                 dataPts.push(daySum);
             }
-
             if(chartInstance) chartInstance.destroy();
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Omzet',
-                        data: dataPts,
-                        borderColor: '#fbbf24',
-                        backgroundColor: 'rgba(251, 191, 36, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#151a23',
-                        pointBorderColor: '#fbbf24',
-                        pointBorderWidth: 2
+                        label: 'Omzet', data: dataPts, borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.1)',
+                        borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#151a23', pointBorderColor: '#fbbf24'
                     }]
                 },
-                options: {
-                    responsive: true,
-                    plugins: { legend: {display: false} },
-                    scales: {
-                        x: { grid: {display:false}, ticks: {color:'#6b7280'} },
-                        y: { grid: {color:'rgba(255,255,255,0.05)'}, ticks: {display:false} }
-                    }
-                }
+                options: { responsive: true, plugins: { legend: {display: false} }, scales: { x: { display:false }, y: { display:false } } }
             });
         }
 
+        // --- CALENDAR LOGIC (NEW) ---
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            const title = document.getElementById('calTitle');
+            grid.innerHTML = "";
+            
+            const m = calDate.getMonth();
+            const y = calDate.getFullYear();
+            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            title.innerText = `${monthNames[m]} ${y}`;
+
+            ["Min","Sen","Sel","Rab","Kam","Jum","Sab"].forEach(d => {
+                grid.innerHTML += `<div class="cal-day-name">${d}</div>`;
+            });
+
+            const firstDay = new Date(y, m, 1).getDay();
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            const today = new Date();
+
+            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
+
+            for(let i=1; i<=daysInMonth; i++) {
+                const dateStr = `${i}/${m+1}/${y}`;
+                const dayData = rawData.filter(d => d.tgl.includes(dateStr) || d.tgl == `'${dateStr}`);
+                
+                let dot = "";
+                if(dayData.length > 0) {
+                    const isLibur = dayData.some(d => d.stat === 'Libur');
+                    dot = `<div class="cal-dot ${isLibur ? 'red' : 'green'}"></div>`;
+                }
+
+                let cls = "cal-day";
+                if(i === today.getDate() && m === today.getMonth() && y === today.getFullYear()) cls += " today";
+
+                const el = document.createElement('div');
+                el.className = cls;
+                el.innerHTML = `${i} ${dot}`;
+                el.onclick = () => openDateDetail(i, m, y, dayData);
+                grid.appendChild(el);
+            }
+        }
+
+        function changeCalMonth(dir) {
+            calDate.setMonth(calDate.getMonth() + dir);
+            renderCalendar();
+        }
+
+        function openDateDetail(d, m, y, data) {
+            const modal = document.getElementById('detailModal');
+            const content = document.getElementById('modalContent');
+            const dateTitle = document.getElementById('modalDate');
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
+            
+            dateTitle.innerText = `${d} ${monthNames[m]} ${y}`;
+            content.innerHTML = "";
+
+            if(data.length === 0) {
+                content.innerHTML = "<div style='text-align:center; color:gray; padding:20px;'>Tidak ada data pada tanggal ini.</div>";
+            } else {
+                let totalDayIncome = 0;
+                
+                // Cek status libur
+                const liburData = data.find(x => x.stat === "Libur");
+                if(liburData) {
+                    content.innerHTML += `
+                        <div style="background:rgba(239, 68, 68, 0.1); padding:15px; border-radius:10px; border:1px solid var(--danger); text-align:center; margin-bottom:15px;">
+                            <h3 style="margin:0; color:var(--danger)">LIBUR OPERASIONAL</h3>
+                            <p style="margin:5px 0 0 0; font-size:0.9rem;">Alasan: ${liburData.alasan}</p>
+                        </div>
+                    `;
+                } else {
+                    // Tampilkan ringkasan transaksi
+                    let listHtml = "";
+                    data.forEach(item => {
+                        const inc = parseInt(item.masuk);
+                        const exp = parseInt(item.keluar);
+                        totalDayIncome += inc;
+
+                        if(inc > 0) {
+                             listHtml += `
+                                <div class="detail-row">
+                                    <div>
+                                        <div style="font-weight:700;">${item.barber}</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">Pendapatan Jasa</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div style="color:var(--success); font-weight:700;">+${fmtMoney(inc)}</div>
+                                        <span class="badge badge-work">Masuk</span>
+                                    </div>
+                                </div>
+                             `;
+                        }
+                        if(exp > 0) {
+                            listHtml += `
+                                <div class="detail-row">
+                                    <div>
+                                        <div style="font-weight:700;">Pengeluaran</div>
+                                        <div style="font-size:0.75rem; color:var(--text-muted);">${item.ket || '-'}</div>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div style="color:var(--danger); font-weight:700;">-${fmtMoney(exp)}</div>
+                                        <span class="badge badge-off">Keluar</span>
+                                    </div>
+                                </div>
+                             `;
+                        }
+                    });
+
+                    content.innerHTML += `
+                        <div style="margin-bottom:20px; text-align:center;">
+                            <span style="font-size:0.8rem; color:var(--text-muted);">TOTAL PEMASUKAN HARI INI</span>
+                            <h2 style="margin:5px 0; color:var(--primary);">${fmtMoney(totalDayIncome)}</h2>
+                        </div>
+                        <div style="max-height:200px; overflow-y:auto;">${listHtml}</div>
+                    `;
+                }
+            }
+
+            modal.style.display = "flex";
+        }
+
+        function closeDetailModal(e) {
+            if(e.target.id === 'detailModal') {
+                document.getElementById('detailModal').style.display = "none";
+            }
+        }
+
+        // --- HISTORY ---
         function renderHistory() {
             const container = document.getElementById('history-container');
             container.innerHTML = '';
-            
             const list = [...rawData].reverse().slice(0, 20);
-            
-            if(list.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">Belum ada data</div>';
-                return;
-            }
-
+            if(list.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">Belum ada data</div>'; return; }
             list.forEach(item => {
-                const isLibur = item.stat === 'Libur';
-                const isExp = parseInt(item.keluar) > 0;
-                
-                let icon = isLibur ? 'bx-block' : 'bx-cut';
-                let color = isLibur ? 'var(--danger)' : 'var(--primary)';
+                const isLibur = item.stat === 'Libur', isExp = parseInt(item.keluar) > 0;
+                let icon = isLibur ? 'bx-block' : 'bx-cut', color = isLibur ? 'var(--danger)' : 'var(--primary)';
                 if(isExp && !isLibur) { icon = 'bx-wallet'; color = 'var(--text-muted)'; }
-
                 let title = isLibur ? "Libur Operasional" : (item.barber || "Transaksi");
                 let sub = item.tgl.replace("'","");
                 if(item.stat !== 'Libur' && item.ket !== '-') sub += " • " + item.ket;
                 if(isLibur) sub += " • " + item.alasan;
-
-                let val = "";
-                if(isLibur) val = "OFF";
-                else if(isExp) val = `<span style="color:var(--danger)">-${parseInt(item.keluar)/1000}k</span>`;
-                else val = `<span style="color:var(--success)">+${parseInt(item.masuk)/1000}k</span>`;
-
-                const el = document.createElement('div');
-                el.className = 'list-item';
-                el.innerHTML = `
-                    <div style="display:flex; align-items:center;">
-                        <div class="list-icon" style="color:${color}"><i class='bx ${icon}'></i></div>
-                        <div>
-                            <div style="font-weight:700; font-size:0.95rem;">${title}</div>
-                            <div style="font-size:0.75rem; color:var(--text-muted);">${sub}</div>
-                        </div>
-                    </div>
-                    <div style="font-weight:700;">${val}</div>
-                `;
+                let val = isLibur ? "OFF" : (isExp ? `<span style="color:var(--danger)">-${parseInt(item.keluar)/1000}k</span>` : `<span style="color:var(--success)">+${parseInt(item.masuk)/1000}k</span>`);
+                const el = document.createElement('div'); el.className = 'list-item';
+                el.innerHTML = `<div style="display:flex; align-items:center;"><div class="list-icon" style="color:${color}"><i class='bx ${icon}'></i></div><div><div style="font-weight:700; font-size:0.95rem;">${title}</div><div style="font-size:0.75rem; color:var(--text-muted);">${sub}</div></div></div><div style="font-weight:700;">${val}</div>`;
                 container.appendChild(el);
             });
         }
@@ -422,128 +521,55 @@
         window.switchPage = (pageId, el) => {
             document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
             document.getElementById('p-'+pageId).classList.remove('hidden');
-            
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(el) el.classList.add('active');
         }
 
+        // --- INPUT FLOW ---
         async function openInput() {
-            const { value: status } = await Swal.fire({
-                title: 'Status Hari Ini',
-                input: 'radio',
-                inputOptions: { 'Kerja': '✂️ Kerja', 'Libur': '⛔ Libur' },
-                inputValue: 'Kerja',
-                background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24'
-            });
-
+            const { value: status } = await Swal.fire({ title: 'Status Hari Ini', input: 'radio', inputOptions: { 'Kerja': '✂️ Kerja', 'Libur': '⛔ Libur' }, inputValue: 'Kerja', background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24' });
             if(!status) return;
-
             if(status === 'Libur') {
-                const { value: reason } = await Swal.fire({
-                    title: 'Alasan Libur',
-                    input: 'text',
-                    background: '#151a23', color: '#fff', confirmButtonColor: '#ef4444'
-                });
+                const { value: reason } = await Swal.fire({ title: 'Alasan Libur', input: 'text', background: '#151a23', color: '#fff', confirmButtonColor: '#ef4444' });
                 if(reason) submitData({status: 'Libur', alasan_libur: reason, tanggal: getToday()});
-            } else {
-                showWorkInput();
-            }
+            } else { showWorkInput(); }
         }
 
         async function showWorkInput() {
             const p = settings.prices;
             const staffOpt = settings.staff.map(s => `<option value="${s}">${s}</option>`).join('');
-            
             const html = `
                 <div style="text-align:left; color:white;">
-                    <label class="label-dark">Barber</label>
-                    <select id="sw_staff" class="input-dark" style="background:#0b0e14">${staffOpt}</select>
-                    
+                    <label class="label-dark">Barber</label><select id="sw_staff" class="input-dark" style="background:#0b0e14">${staffOpt}</select>
                     <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
                         <div><label class="label-dark">Dws Biasa</label><input type="number" id="q_db" class="input-dark" placeholder="0"></div>
                         <div><label class="label-dark">Dws Keramas</label><input type="number" id="q_dk" class="input-dark" placeholder="0"></div>
                         <div><label class="label-dark">Ank Biasa</label><input type="number" id="q_ab" class="input-dark" placeholder="0"></div>
                         <div><label class="label-dark">Ank Keramas</label><input type="number" id="q_ak" class="input-dark" placeholder="0"></div>
                     </div>
-
                     <div style="border-top:1px solid #333; padding-top:10px;">
                         <label class="label-dark" style="color:#ef4444">Pengeluaran (Opsional)</label>
-                        <div style="display:flex; gap:10px;">
-                            <input type="number" id="q_exp" class="input-dark" placeholder="Rp">
-                            <input type="text" id="q_ket" class="input-dark" placeholder="Ket">
-                        </div>
+                        <div style="display:flex; gap:10px;"><input type="number" id="q_exp" class="input-dark" placeholder="Rp"><input type="text" id="q_ket" class="input-dark" placeholder="Ket"></div>
                     </div>
-                </div>
-            `;
-
-            const result = await Swal.fire({
-                title: 'Input Transaksi',
-                html: html,
-                background: '#151a23', color: '#fff',
-                showCancelButton: true,
-                confirmButtonColor: '#fbbf24',
-                confirmButtonText: 'Simpan',
-                cancelButtonColor: '#333',
-                preConfirm: () => {
-                    return {
-                        barber: document.getElementById('sw_staff').value,
-                        db: document.getElementById('q_db').value || 0,
-                        dk: document.getElementById('q_dk').value || 0,
-                        ab: document.getElementById('q_ab').value || 0,
-                        ak: document.getElementById('q_ak').value || 0,
-                        exp: document.getElementById('q_exp').value || 0,
-                        ket: document.getElementById('q_ket').value || '-'
-                    }
-                }
-            });
-
+                </div>`;
+            const result = await Swal.fire({ title: 'Input Transaksi', html: html, background: '#151a23', color: '#fff', showCancelButton: true, confirmButtonColor: '#fbbf24', confirmButtonText: 'Simpan', cancelButtonColor: '#333', preConfirm: () => {
+                return { barber: document.getElementById('sw_staff').value, db: document.getElementById('q_db').value || 0, dk: document.getElementById('q_dk').value || 0, ab: document.getElementById('q_ab').value || 0, ak: document.getElementById('q_ak').value || 0, exp: document.getElementById('q_exp').value || 0, ket: document.getElementById('q_ket').value || '-' }
+            }});
             if(result.isConfirmed) {
                 const d = result.value;
                 const total = (d.db * p.db) + (d.dk * p.dk) + (d.ab * p.ab) + (d.ak * p.ak);
-                
-                const payload = {
-                    status: 'Kerja',
-                    tanggal: getToday(),
-                    barber_name: d.barber,
-                    layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}),
-                    total_uang: total,
-                    pengeluaran: d.exp,
-                    desc_pengeluaran: d.ket
-                };
-                submitData(payload);
+                submitData({ status: 'Kerja', tanggal: getToday(), barber_name: d.barber, layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}), total_uang: total, pengeluaran: d.exp, desc_pengeluaran: d.ket });
             }
         }
 
         function submitData(dataObj) {
-            Swal.fire({
-                title: 'Menyimpan...',
-                didOpen: () => Swal.showLoading(),
-                background: '#151a23', color: '#fff'
-            });
-
-            const fd = new FormData();
-            for(let k in dataObj) fd.append(k, dataObj[k]);
-
-            fetch(ENDPOINT, { method: 'POST', body: fd })
-            .then(res => res.json())
-            .then(d => {
-                if(d.result === 'success') {
-                    Swal.fire({ icon:'success', title:'Berhasil', background:'#151a23', color:'#fff', timer:1500, showConfirmButton:false });
-                    fetchData();
-                } else {
-                    throw new Error(d.error);
-                }
-            })
-            .catch(e => {
-                Swal.fire({ icon:'error', title:'Error', text: 'Gagal menyimpan', background:'#151a23', color:'#fff'});
-            });
+            Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading(), background: '#151a23', color: '#fff' });
+            const fd = new FormData(); for(let k in dataObj) fd.append(k, dataObj[k]);
+            fetch(ENDPOINT, { method: 'POST', body: fd }).then(res => res.json()).then(d => {
+                if(d.result === 'success') { Swal.fire({ icon:'success', title:'Berhasil', background:'#151a23', color:'#fff', timer:1500, showConfirmButton:false }); fetchData(); } else throw new Error(d.error);
+            }).catch(e => Swal.fire({ icon:'error', title:'Error', background:'#151a23', color:'#fff'}));
         }
-
-        function getToday() {
-            const d = new Date();
-            return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-        }
-
+        function getToday() { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`; }
     </script>
 </body>
 </html>
