@@ -112,6 +112,13 @@
             border: none; cursor: pointer; z-index: 100; transition: transform 0.2s;
         }
         .btn-fab:active { transform: scale(0.9); }
+        
+        .btn-primary {
+            width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), #f59e0b); 
+            border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-primary:active { transform: scale(0.98); box-shadow: 0 0 15px var(--primary-glow); }
 
         /* Navigation */
         .nav-bar {
@@ -126,9 +133,25 @@
         .nav-item.active { color: var(--primary); transform: translateY(-5px); }
         .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: var(--primary); border-radius: 50%; }
 
+        /* Report Page Specific */
+        .report-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            margin-bottom: 25px;
+        }
+        .report-card { background: var(--bg-card); padding: 15px; border-radius: 15px; border: 1px solid var(--border); }
+
         /* Lists & Inputs */
         .list-group { display: flex; flex-direction: column; gap: 10px; }
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+        .list-item { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03);
+            transition: background-color 0.2s;
+            border-radius: 10px;
+        }
+        .list-item:hover { background-color: rgba(255,255,255,0.03); }
         .list-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 15px; }
         
         .input-dark {
@@ -141,8 +164,10 @@
 
         /* Utilities */
         .hidden { display: none; }
-        .fade-in { animation: fadeIn 0.4s ease forwards; }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        .fade-out { animation: fadeOut 0.3s ease-in forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
         
         /* Loader */
         #loader { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -172,8 +197,13 @@
             <div class="glass-card hero-card">
                 <div class="balance-label">Profit Bulan Ini</div>
                 <div class="balance-amount" id="disp_profit">Rp 0</div>
-                <div style="font-size:0.8rem; color: var(--success); display:flex; align-items:center; gap:5px;">
-                    <i class='bx bx-trending-up'></i> <span id="disp_target_pct">0%</span> dari Target
+                <div style="font-size:0.8rem; color: var(--text-muted); display:flex; align-items:center; justify-content: space-between; gap:5px; margin-top: 5px;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <i class='bx bx-trending-up' style="color:var(--success)"></i> <span id="disp_target_pct" style="color:var(--success); font-weight:700;">0%</span> tercapai
+                    </div>
+                    <div>
+                        Target: <span id="disp_target_amount" style="color:var(--text-main); font-weight:700;">Rp 0</span>
+                    </div>
                 </div>
                 <div class="stats-row">
                     <div class="stat-item"><h4>Pemasukan</h4><p class="income" id="disp_income">Rp 0</p></div>
@@ -220,16 +250,38 @@
                 <label class="label-dark">Dewasa Keramas</label><input type="number" id="set_dk" class="input-dark">
                 <label class="label-dark">Anak Biasa</label><input type="number" id="set_ab" class="input-dark">
                 <label class="label-dark">Anak Keramas</label><input type="number" id="set_ak" class="input-dark">
-                <button onclick="saveSettings()" style="width:100%; padding:12px; background:var(--primary); border:none; border-radius:10px; font-weight:700; cursor:pointer;">SIMPAN HARGA</button>
+                <button onclick="saveSettings()" class="btn-primary">SIMPAN HARGA</button>
             </div>
             <div class="glass-card">
                 <h4 style="margin-top:0; color:var(--accent); margin-bottom:15px;">Manajemen</h4>
                 <label class="label-dark">Target Omzet Bulanan</label><input type="number" id="set_target" class="input-dark">
+                <label class="label-dark">PIN Keamanan (4 Digit, biarkan kosong untuk menonaktifkan)</label><input type="number" id="set_pin" class="input-dark" maxlength="4" placeholder="****">
                 <label class="label-dark">Daftar Barber (Pisah koma)</label><textarea id="set_staff" class="input-dark" rows="3"></textarea>
-                <button onclick="saveSettings()" style="width:100%; padding:12px; background:var(--accent); color:white; border:none; border-radius:10px; font-weight:700; cursor:pointer;">SIMPAN DATA</button>
+                <button onclick="saveSettings()" class="btn-primary" style="background:var(--accent);">SIMPAN DATA</button>
             </div>
         </div>
 
+        <!-- PAGE: REPORTS (NEW) -->
+        <div id="p-reports" class="page hidden fade-in">
+            <h2 style="margin-bottom:20px;">Laporan Performa</h2>
+            <div class="glass-card">
+                <label class="label-dark">Pilih Periode Laporan</label>
+                <select id="reportPeriod" class="input-dark" onchange="renderReport()">
+                    <option value="this_month">Bulan Ini</option>
+                    <option value="last_month">Bulan Lalu</option>
+                    <option value="last_3_months">3 Bulan Terakhir</option>
+                </select>
+                <div class="report-summary">
+                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pemasukan</h4><p id="report_income" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--success);">Rp 0</p></div>
+                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pengeluaran</h4><p id="report_expense" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--danger);">Rp 0</p></div>
+                </div>
+                <div class="report-card" style="text-align:center; background: linear-gradient(45deg, var(--primary), #f59e0b); color:black;">
+                    <h4 style="margin:0; color:rgba(0,0,0,0.7); font-weight:500;">PROFIT BERSIH</h4>
+                    <p id="report_profit" style="margin:5px 0 0; font-weight:900; font-size:1.5rem;">Rp 0</p>
+                </div>
+                <button onclick="exportToCSV()" class="btn-primary" style="margin-top:20px; background:var(--accent);">EKSPOR KE CSV</button>
+            </div>
+        </div>
     </div>
 
     <!-- DETAIL MODAL -->
@@ -252,7 +304,8 @@
     <nav class="nav-bar">
         <div class="nav-item active" onclick="switchPage('home', this)"><i class='bx bxs-dashboard'></i></div>
         <div class="nav-item" onclick="switchPage('calendar', this)"><i class='bx bxs-calendar'></i></div>
-        <div class="nav-item" onclick="switchPage('history', this)"><i class='bx bx-time-five'></i></div>
+        <div class="nav-item" onclick="switchPage('reports', this)"><i class='bx bxs-report'></i></div>
+        <div class="nav-item" onclick="switchPage('history', this)"><i class='bx bx-time-five'></i></div> <!-- History moved -->
         <div class="nav-item" onclick="switchPage('settings', this)"><i class='bx bxs-cog'></i></div>
     </nav>
 
@@ -267,7 +320,8 @@
         let settings = {
             prices: { db: 25000, dk: 30000, ab: 15000, ak: 20000 },
             target: 10000000,
-            staff: ["Owner", "Barber 1"]
+            staff: ["Owner", "Barber 1"],
+            pin: "" // PIN default kosong
         };
 
         window.onload = () => {
@@ -283,6 +337,7 @@
             document.getElementById('set_ab').value = settings.prices.ab;
             document.getElementById('set_ak').value = settings.prices.ak;
             document.getElementById('set_target').value = settings.target;
+            document.getElementById('set_pin').value = settings.pin;
             document.getElementById('set_staff').value = settings.staff.join(", ");
         }
 
@@ -292,6 +347,7 @@
             settings.prices.ab = parseInt(document.getElementById('set_ab').value) || 0;
             settings.prices.ak = parseInt(document.getElementById('set_ak').value) || 0;
             settings.target = parseInt(document.getElementById('set_target').value) || 0;
+            settings.pin = document.getElementById('set_pin').value || "";
             settings.staff = document.getElementById('set_staff').value.split(',').map(s=>s.trim());
             localStorage.setItem('cukur_settings', JSON.stringify(settings));
             Swal.fire({ icon: 'success', title: 'Tersimpan!', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, background:'#151a23', color:'#fff' });
@@ -316,6 +372,7 @@
             renderDashboard();
             renderCalendar();
             renderHistory();
+            renderReport(); // Initial render for reports page
         }
 
         function fmtMoney(n) { return "Rp " + parseInt(n).toLocaleString('id-ID'); }
@@ -338,6 +395,7 @@
             document.getElementById('disp_income').innerText = fmtMoney(inc);
             document.getElementById('disp_expense').innerText = fmtMoney(exp);
             document.getElementById('disp_target_pct').innerText = targetPct + "%";
+            document.getElementById('disp_target_amount').innerText = fmtMoney(settings.target);
             renderChart();
         }
 
@@ -505,22 +563,140 @@
             if(list.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">Belum ada data</div>'; return; }
             list.forEach(item => {
                 const isLibur = item.stat === 'Libur', isExp = parseInt(item.keluar) > 0;
-                let icon = isLibur ? 'bx-block' : 'bx-cut', color = isLibur ? 'var(--danger)' : 'var(--primary)';
-                if(isExp && !isLibur) { icon = 'bx-wallet'; color = 'var(--text-muted)'; }
+                let icon = isLibur ? 'bx-calendar-x' : 'bx-cut', color = isLibur ? 'var(--danger)' : 'var(--primary)';
+                if(isExp && !isLibur) { icon = 'bx-wallet'; color = 'var(--accent)'; }
                 let title = isLibur ? "Libur Operasional" : (item.barber || "Transaksi");
                 let sub = item.tgl.replace("'","");
                 if(item.stat !== 'Libur' && item.ket !== '-') sub += " • " + item.ket;
                 if(isLibur) sub += " • " + item.alasan;
                 let val = isLibur ? "OFF" : (isExp ? `<span style="color:var(--danger)">-${parseInt(item.keluar)/1000}k</span>` : `<span style="color:var(--success)">+${parseInt(item.masuk)/1000}k</span>`);
-                const el = document.createElement('div'); el.className = 'list-item';
+                const el = document.createElement('div'); el.className = 'list-item fade-in';
                 el.innerHTML = `<div style="display:flex; align-items:center;"><div class="list-icon" style="color:${color}"><i class='bx ${icon}'></i></div><div><div style="font-weight:700; font-size:0.95rem;">${title}</div><div style="font-size:0.75rem; color:var(--text-muted);">${sub}</div></div></div><div style="font-weight:700;">${val}</div>`;
                 container.appendChild(el);
             });
         }
 
+        // --- REPORTS (NEW) ---
+        function getReportData() {
+            const period = document.getElementById('reportPeriod').value;
+            const now = new Date();
+            let startDate, endDate = new Date();
+
+            switch(period) {
+                case 'last_month':
+                    startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth(), 0);
+                    break;
+                case 'last_3_months':
+                    startDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                    break;
+                case 'this_month':
+                default:
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+            }
+            
+            // Set time to start/end of day for accurate comparison
+            startDate.setHours(0,0,0,0);
+            endDate.setHours(23,59,59,999);
+
+            const filteredData = rawData.filter(d => {
+                // Handle different date formats like 'DD/MM/YYYY' or 'DD/MM/YYYY HH:mm:ss'
+                const dateParts = d.tgl.replace(/'/g, "").split(' ')[0].split('/');
+                if (dateParts.length !== 3) return false;
+                const itemDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
+                return itemDate >= startDate && itemDate <= endDate;
+            });
+
+            return filteredData;
+        }
+
+        function renderReport() {
+            const data = getReportData();
+            let inc = 0, exp = 0;
+            data.forEach(d => {
+                if(d.stat !== 'Libur') {
+                    inc += parseInt(d.masuk) || 0;
+                    exp += parseInt(d.keluar) || 0;
+                }
+            });
+            const profit = inc - exp;
+
+            document.getElementById('report_income').innerText = fmtMoney(inc);
+            document.getElementById('report_expense').innerText = fmtMoney(exp);
+            document.getElementById('report_profit').innerText = fmtMoney(profit);
+        }
+
+        function exportToCSV() {
+            const data = getReportData();
+            if (data.length === 0) {
+                Swal.fire({ icon: 'info', title: 'Tidak Ada Data', text: 'Tidak ada data untuk diekspor pada periode ini.', background:'#151a23', color:'#fff' });
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Tanggal,Status,Barber,Pemasukan,Pengeluaran,Keterangan\n";
+
+            data.forEach(row => {
+                const tgl = row.tgl.replace(/'/g, "");
+                const ket = `"${(row.ket || row.alasan || '-').replace(/"/g, '""')}"`; // Escape quotes
+                const line = [tgl, row.stat, row.barber || '-', row.masuk || 0, row.keluar || 0, ket].join(",");
+                csvContent += line + "\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            const period = document.getElementById('reportPeriod').value;
+            link.setAttribute("download", `laporan_cukur_${period}_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        async function askForPin(callback) {
+            const { value: pin } = await Swal.fire({
+                title: 'Masukkan PIN Keamanan',
+                input: 'password',
+                inputLabel: 'Halaman ini dilindungi',
+                inputPlaceholder: 'Masukkan PIN 4 digit',
+                inputAttributes: { maxlength: 4, autocapitalize: 'off', autocorrect: 'off' },
+                background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24',
+                showCancelButton: true
+            });
+
+            if (pin === settings.pin) {
+                callback();
+            } else if (pin !== undefined) { // Jika user input sesuatu tapi salah
+                Swal.fire({ icon: 'error', title: 'PIN Salah!', background:'#151a23', color:'#fff' });
+            }
+        }
+
         window.switchPage = (pageId, el) => {
-            document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
-            document.getElementById('p-'+pageId).classList.remove('hidden');
+            // Jika target adalah halaman setting DAN pin sudah diatur, minta pin dulu
+            if (pageId === 'settings' && settings.pin && settings.pin.length > 0) {
+                askForPin(() => proceedSwitchPage(pageId, el));
+                return;
+            }
+            
+            // Langsung pindah halaman jika bukan halaman setting atau pin belum diatur
+            proceedSwitchPage(pageId, el);
+        }
+
+        function proceedSwitchPage(pageId, el) {
+            const currentPage = document.querySelector('.page:not(.hidden)');
+            const nextPage = document.getElementById('p-'+pageId);
+            if(currentPage === nextPage) return;
+
+            currentPage.classList.add('fade-out');
+            setTimeout(() => {
+                currentPage.classList.add('hidden');
+                currentPage.classList.remove('fade-out');
+                nextPage.classList.remove('hidden');
+                nextPage.classList.add('fade-in');
+            }, 300);
+
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(el) el.classList.add('active');
         }
