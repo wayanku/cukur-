@@ -15,8 +15,9 @@
         :root {
             --bg-dark: #0b0e14;
             --bg-card: #151a23;
-            --primary: #fbbf24; 
-            --accent: #3b82f6; 
+            --primary: #fbbf24; /* Emas */
+            --primary-glow: rgba(251, 191, 36, 0.3);
+            --accent: #3b82f6; /* Biru Neon */
             --text-main: #ffffff;
             --text-muted: #9ca3af;
             --border: #27272a;
@@ -35,6 +36,36 @@
             overflow-x: hidden;
         }
 
+        /* --- AURORA BACKGROUND --- */
+        .aurora-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Posisikan di paling belakang */
+            overflow: hidden;
+        }
+        .aurora-background span {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px); /* Efek blur yang lebih kuat */
+            opacity: 0.15; /* Dibuat lebih redup */
+        }
+        .aurora-background span:nth-child(1) {
+            width: 500px; height: 500px; background: #3b82f6; /* Biru */
+            top: -20%; left: -10%;
+            animation: move-aurora-1 25s infinite alternate;
+        }
+        .aurora-background span:nth-child(2) {
+            width: 450px; height: 450px; background: #8b5cf6; /* Ungu */
+            bottom: -15%; right: 0%;
+            animation: move-aurora-2 20s infinite alternate;
+        }
+        @keyframes move-aurora-1 { to { transform: translate(100px, 200px) scale(1.2); opacity: 0.2; } }
+        @keyframes move-aurora-2 { to { transform: translate(-150px, -100px) scale(0.9); opacity: 0.1; } }
+        /* --- END AURORA --- */
+
         .container { max-width: 500px; margin: 0 auto; padding: 20px; min-height: 100vh; position: relative; }
         
         /* Header */
@@ -43,7 +74,7 @@
         .logo span { color: var(--text-main); -webkit-text-fill-color: var(--text-main); }
         
         .avatar { 
-            width: 45px; height: 45px; background: var(--bg-card); border-radius: 50%; 
+            width: 40px; height: 40px; background: var(--bg-card); border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
             border: 1px solid var(--border); font-size: 1.4rem; color: var(--accent);
             cursor: pointer; transition: 0.2s; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
@@ -64,6 +95,7 @@
         }
         
         .hero-card { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--border); position: relative; }
+        .hero-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, var(--primary-glow) 0%, transparent, transparent 70%); opacity: 0.1; animation: pulse 5s infinite; }
         
         .balance-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         .balance-amount { font-size: 2.2rem; font-weight: 700; margin: 5px 0; color: var(--text-main); text-shadow: 0 0 20px rgba(255,255,255,0.1); }
@@ -92,6 +124,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             font-size: 0.9rem; cursor: pointer; position: relative; border: 1px solid transparent; transition: 0.2s;
         }
+        .cal-day:hover { background: #1f2937; border-color: var(--primary); }
         .cal-day.today { border: 1px solid var(--primary); color: var(--primary); font-weight: 700; }
         .cal-dot { width: 6px; height: 6px; border-radius: 50%; position: absolute; bottom: 6px; }
         .cal-dot.green { background: var(--success); }
@@ -121,12 +154,15 @@
         .radio-input:checked + .radio-label.opt-libur { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: var(--danger); font-weight: 700; }
         .radio-input:checked + .radio-label.opt-absen { background: rgba(59, 130, 246, 0.2); border-color: var(--accent); color: var(--accent); font-weight: 700; }
         .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-work { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge-off { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
         .badge-absent { background: rgba(59, 130, 246, 0.2); color: var(--accent); }
 
         /* STAFF DETAIL SPECIFIC */
         .staff-header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
         .staff-name-lg { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
         .income-estimate { background: linear-gradient(45deg, #10b981, #059669); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 15px; }
+        .staff-card-body { display: none; margin-top: 15px; border-top: 1px solid var(--border); padding-top: 15px; }
 
         /* UTILS */
         .hidden { display: none; }
@@ -134,16 +170,18 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .btn-fab {
-            position: fixed; bottom: 100px; right: 20px;
+            position: fixed; bottom: 100px; right: 25px;
             width: 60px; height: 60px;
             background: var(--primary); color: #000; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-            border: none; cursor: pointer; z-index: 100;
+            font-size: 2rem; box-shadow: 0 0 25px var(--primary-glow);
+            border: none; cursor: pointer; z-index: 100; transition: transform 0.2s;
         }
+        .btn-fab:active { transform: scale(0.9); }
         
-        .btn-primary { width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), #f59e0b); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; color: black; }
-        
+        .btn-primary { width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), #f59e0b); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; color: black; transition: all 0.2s; }
+        .btn-primary:active { transform: scale(0.98); box-shadow: 0 0 15px var(--primary-glow); }
+
         .nav-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             width: 90%; max-width: 460px;
@@ -152,8 +190,9 @@
             display: flex; justify-content: space-around; align-items: center;
             z-index: 99; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
         }
-        .nav-item { color: var(--text-muted); font-size: 1.5rem; padding: 10px; position: relative; }
+        .nav-item { color: var(--text-muted); font-size: 1.5rem; padding: 10px; position: relative; transition: 0.3s; }
         .nav-item.active { color: var(--primary); transform: translateY(-5px); }
+        .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 5px var(--primary); }
         .staff-card { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; }
         
         #loader { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
@@ -162,20 +201,25 @@
         
         /* Modal Fullscreen for Staff Detail */
         .modal-full { position: fixed; inset: 0; background: var(--bg-dark); z-index: 200; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
-        .modal-full-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-full-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-top: 10px; }
         
         /* Detail Modal */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px; }
         .modal-card { background: #151a23; width: 100%; max-width: 400px; border-radius: 20px; border: 1px solid var(--border); padding: 25px; position: relative; }
         .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .detail-row:last-child { border: none; }
-        .badge-work { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .badge-off { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
 
 
     </style>
 </head>
 <body>
+
+    <!-- LOADER -->
+    <div class="aurora-background">
+        <span></span>
+        <span></span>
+        <!-- Anda bisa menambahkan lebih banyak span untuk warna lain -->
+    </div>
 
     <!-- LOADER -->
     <div id="loader">
@@ -199,6 +243,14 @@
             <div class="glass-card hero-card">
                 <div class="balance-label">Profit Bulan Ini</div>
                 <div class="balance-amount" id="disp_profit">Rp 0</div>
+                <div style="font-size:0.8rem; color: var(--text-muted); display:flex; align-items:center; justify-content: space-between; gap:5px; margin-top: 5px;">
+                    <div style="display:flex; align-items:center; gap:5px;">
+                        <i class='bx bx-trending-up' style="color:var(--success)"></i> <span id="disp_target_pct" style="color:var(--success); font-weight:700;">0%</span> tercapai
+                    </div>
+                    <div>
+                        Target: <span id="disp_target_amount" style="color:var(--text-main); font-weight:700;">Rp 0</span>
+                    </div>
+                </div>
                 <div class="stats-row">
                     <div class="stat-item"><h4>Pemasukan</h4><p class="income" id="disp_income">Rp 0</p></div>
                     <div class="stat-item"><h4>Pengeluaran</h4><p class="expense" id="disp_expense">Rp 0</p></div>
@@ -245,9 +297,13 @@
                     <option value="this_month">Bulan Ini</option>
                     <option value="last_month">Bulan Lalu</option>
                 </select>
-                <div class="report-summary">
-                    <div class="report-card"><h4>Masuk</h4><p id="report_income" style="color:var(--success);">Rp 0</p></div>
-                    <div class="report-card"><h4>Keluar</h4><p id="report_expense" style="color:var(--danger);">Rp 0</p></div>
+                 <div class="report-summary">
+                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pemasukan</h4><p id="report_income" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--success);">Rp 0</p></div>
+                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pengeluaran</h4><p id="report_expense" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--danger);">Rp 0</p></div>
+                </div>
+                <div class="report-card" style="text-align:center; background: linear-gradient(45deg, var(--primary), #f59e0b); color:black;">
+                    <h4 style="margin:0; color:rgba(0,0,0,0.7); font-weight:500;">PROFIT BERSIH</h4>
+                    <p id="report_profit" style="margin:5px 0 0; font-weight:900; font-size:1.5rem;">Rp 0</p>
                 </div>
                 <button onclick="exportToCSV()" class="btn-primary" style="margin-top:20px; background:var(--accent);">EKSPOR CSV</button>
             </div>
@@ -277,10 +333,10 @@
                 <h4 style="margin:0 0 15px; color:var(--accent);">Manajemen Karyawan</h4>
                 <div id="staff-management-container"></div>
                 <button onclick="addNewStaffUI()" class="btn-primary" style="background:rgba(59, 130, 246, 0.2); color:var(--accent); margin-bottom:15px;">+ Tambah Karyawan</button>
-                
-                <h4 style="margin:15px 0 10px; color:var(--text-muted);">Target & Admin</h4>
-                <label class="label-dark">Target Omzet</label><input type="number" id="set_target" class="input-dark">
-                <label class="label-dark">PIN Admin</label><input type="number" id="set_pin" class="input-dark" placeholder="4 digit">
+                <div style="border-top: 1px solid var(--border); margin: 20px 0; "></div>
+                <h4 style="margin:0 0 15px; color:var(--accent);">Pengaturan Umum</h4>
+                <label class="label-dark">Target Omzet Bulanan</label><input type="number" id="set_target" class="input-dark">
+                <label class="label-dark">PIN Admin (4 Digit)</label><input type="number" id="set_pin" class="input-dark" placeholder="****" maxlength="4">
                 
                 <button onclick="saveSettings()" class="btn-primary" style="background:var(--accent); color:white; margin-top:10px;">SIMPAN SEMUA KE SHEET</button>
             </div>
@@ -402,7 +458,7 @@
                                 <button onclick="deleteStaff(${index})" style="background:none; border:none; color:var(--danger);"><i class='bx bx-trash'></i></button>
                             </div>
                         </div>
-                        <div class="staff-card-body" style="display:none;">
+                        <div class="staff-card-body">
                             <label class="label-dark">Nama</label><input type="text" class="input-dark staff-name" value="${staff.name}">
                             <label class="label-dark">Gaji Harian (Rp)</label><input type="number" class="input-dark staff-salary" value="${staff.salary}">
                             <label class="label-dark">Komisi (%)</label><input type="number" class="input-dark staff-commission" value="${staff.commission}" placeholder="0">
@@ -458,7 +514,7 @@
             // Expand last
             const btns = document.querySelectorAll('#staff-management-container button i.bx-edit');
             if(btns.length > 0) btns[btns.length-1].parentElement.click();
-        }
+        } 
         
         function toggleStaffEdit(btn) {
             const body = btn.closest('.staff-card').querySelector('.staff-card-body');
@@ -674,7 +730,7 @@
                                 </div>
                                 <div style="text-align:right;">
                                     <div style="color:var(--success); font-weight:700;">+Rp ${inc.toLocaleString('id-ID')}</div>
-                                    <span class="badge badge-work">Masuk</span>
+                                    <span class="badge badge-work">Kerja</span>
                                 </div>
                             </div>
                          `;
@@ -752,11 +808,15 @@
                 const parts = d.tgl.split(' ')[0].split('/');
                 return parseInt(parts[1]) === (now.getMonth() + 1) && parseInt(parts[2]) === now.getFullYear();
             });
-            let inc = 0, exp = 0;
+            let inc = 0, exp = 0, profit = 0;
             thisMonthData.forEach(d => { if(d.stat !== 'Libur') { inc += parseInt(d.masuk)||0; exp += parseInt(d.keluar)||0; } });
-            document.getElementById('disp_profit').innerText = "Rp " + (inc-exp).toLocaleString('id-ID');
+            profit = inc - exp;
+            const targetPct = Math.min(100, Math.round((profit / settings.target) * 100));
+            document.getElementById('disp_profit').innerText = "Rp " + profit.toLocaleString('id-ID');
             document.getElementById('disp_income').innerText = "Rp " + inc.toLocaleString('id-ID');
             document.getElementById('disp_expense').innerText = "Rp " + exp.toLocaleString('id-ID');
+            document.getElementById('disp_target_pct').innerText = targetPct + "%";
+            document.getElementById('disp_target_amount').innerText = "Rp " + parseInt(settings.target).toLocaleString('id-ID');
             
             const ctx = document.getElementById('mainChart').getContext('2d');
             const dataPts = [];
@@ -767,7 +827,7 @@
                 dataPts.push(sum);
             }
             if(chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['','','','','','',''], datasets: [{ data: dataPts, borderColor: '#fbbf24', borderWidth: 2, tension:0.4 }] }, options: { plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} } });
+            chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['','','','','','',''], datasets: [{ data: dataPts, borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.1)', borderWidth: 2, tension:0.4, fill: true }] }, options: { responsive: true, plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} } });
         }
 
         function renderCalendar() {
@@ -823,11 +883,23 @@
                 exp += parseInt(d.keluar) || 0;
             });
 
-            document.getElementById('report_income').innerText = "Rp " + inc.toLocaleString('id-ID');
-            document.getElementById('report_expense').innerText = "Rp " + exp.toLocaleString('id-ID');
+            document.getElementById('report_income').innerText = "Rp " + inc.toLocaleString('id-ID');;
+            document.getElementById('report_expense').innerText = "Rp " + exp.toLocaleString('id-ID');;
+            document.getElementById('report_profit').innerText = "Rp " + (inc - exp).toLocaleString('id-ID');;
         }
         function exportToCSV() { Swal.fire('Coming Soon', 'Fitur ekspor CSV akan segera tersedia!', 'info'); }
-        function switchPage(pageId, el) { document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden')); document.getElementById('p-'+pageId).classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(el) el.classList.add('active'); }
+        function switchPage(pageId, el) { 
+            const currentPage = document.querySelector('.page:not(.hidden)');
+            const nextPage = document.getElementById('p-'+pageId);
+            if(currentPage === nextPage) return;
+
+            currentPage.classList.remove('fade-in');
+            nextPage.classList.remove('hidden');
+            nextPage.classList.add('fade-in');
+            currentPage.classList.add('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(el) el.classList.add('active'); 
+        }
         function changeCalMonth(dir) { calDate.setMonth(calDate.getMonth() + dir); renderCalendar(); }
         function getNowTimestamp() { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
 
