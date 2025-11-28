@@ -383,6 +383,7 @@
         const ENDPOINT = "https://script.google.com/macros/s/AKfycbzc3642pMMFDvGUp6KB6PqrBCSAg3P-iYlbOMJ0_wmmf6v8LXhGv8pLFNZpX5M1oeaj3w/exec";
         
         let rawData = [];
+        let transactionsByDate = new Map(); // Map untuk menyimpan transaksi yang dikelompokkan berdasarkan tanggal untuk pencarian lebih cepat
         let staffList = [];
         let chartInstance = null;
         let calDate = new Date();
@@ -397,6 +398,12 @@
             fetchData();
         };
 
+        function processAndRenderData(data) {
+            rawData = data.transactions || [];
+            staffList = data.staff || [];
+            preprocessData();
+            refreshUI();
+        }
         function loadLocalSettings() {
             const s = localStorage.getItem('cukur_settings');
             if(s) {
@@ -414,26 +421,47 @@
         }
 
         function fetchData() {
+            // 1. Coba muat data dari cache dulu untuk tampilan instan
+            const cachedData = localStorage.getItem('cukur_rawData');
+            if (cachedData) {
+                console.log("Memuat data dari cache...");
+                processAndRenderData(JSON.parse(cachedData));
+            }
+
+            // 2. Tetap ambil data terbaru dari server
+            console.log("Mengambil data baru dari server...");
             fetch(ENDPOINT)
             .then(res => res.json())
             .then(data => {
-                rawData = data.transactions || []; // Struktur baru
-                staffList = data.staff || []; // Ambil staff dari sheet
-                
-                // Jika sheet kosong, pakai default
-                if(staffList.length === 0) {
-                     staffList = [{name: "Owner", salary: 0, commission: 0, pin: "1234"}];
-                }
-                
-                document.getElementById('loader').style.display = 'none';
-                renderStaffManagement(); // Render ulang setting dengan data dari sheet
-                refreshUI();
+                console.log("Data baru diterima, memperbarui UI.");
+                // Simpan data baru ke cache untuk loading berikutnya
+                localStorage.setItem('cukur_rawData', JSON.stringify(data));
+                processAndRenderData(data); // Proses dan render ulang dengan data baru
             })
             .catch(err => {
                 console.error(err);
-                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Pastikan Script sudah dideploy ulang', background:'#151a23', color:'#fff'});
-                document.getElementById('loader').style.display = 'none';
+                // Hanya tampilkan error jika tidak ada data cache sama sekali
+                if (!cachedData) {
+                    Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Pastikan Script sudah dideploy ulang', background:'#151a23', color:'#fff'});
+                    document.getElementById('loader').style.display = 'none';
+                }
+            }); 
+        }
+
+        function preprocessData() {
+            transactionsByDate.clear();
+            rawData.forEach(item => {
+                const dateParts = item.tgl.split(' ')[0].split('/');
+                const dateKey = `${parseInt(dateParts[0])}/${parseInt(dateParts[1])}/${parseInt(dateParts[2])}`;
+                if (!transactionsByDate.has(dateKey)) {
+                    transactionsByDate.set(dateKey, []);
+                }
+                transactionsByDate.get(dateKey).push(item);
             });
+            if(staffList.length === 0) {
+                 staffList = [{name: "Owner", salary: 0, commission: 0, pin: "1234"}];
+            }
+            renderStaffManagement();
         }
 
         function refreshUI() {
@@ -442,6 +470,7 @@
             renderHistory();
             renderStaffList(); // Render halaman absen baru
             renderReport();
+            document.getElementById('loader').style.display = 'none'; // Sembunyikan loader setelah semua komponen UI selesai dirender
         }
 
         // --- MANAJEMEN KARYAWAN (SETTINGS) ---
@@ -823,7 +852,7 @@
             for(let i=6; i>=0; i--) {
                 const d = new Date(); d.setDate(d.getDate() - i);
                 const matchDate = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-                const sum = rawData.filter(r => r.tgl.startsWith(matchDate) && r.stat === 'Kerja').reduce((a,c) => a + (parseInt(c.masuk)||0), 0);
+                const sum = (transactionsByDate.get(matchDate) || []).filter(r => r.stat === 'Kerja').reduce((a,c) => a + (parseInt(c.masuk)||0), 0);
                 dataPts.push(sum);
             }
             if(chartInstance) chartInstance.destroy();
@@ -839,11 +868,11 @@
             const daysInMonth = new Date(y, m + 1, 0).getDate();
             for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
             for(let i=1; i<=daysInMonth; i++) {
-                const dateStr = `${i}/${m+1}/${y}`;
-                const hasWork = rawData.some(d => d.tgl.startsWith(dateStr) && (d.stat==='Kerja'||d.stat==='Hadir'));
-                const hasAbsen = rawData.some(d => d.tgl.startsWith(dateStr) && d.stat==='Absen');
+                const dateStr = `${i}/${m + 1}/${y}`; // Format tanggal konsisten untuk kunci map
+                const dayData = transactionsByDate.get(dateStr) || []; // Ambil data pra-pemrosesan untuk hari ini
+                const hasWork = dayData.some(d => d.stat === 'Kerja' || d.stat === 'Hadir');
+                const hasAbsen = dayData.some(d => d.stat === 'Absen');
                 let dot = hasAbsen ? '<div class="cal-dot blue"></div>' : (hasWork ? '<div class="cal-dot green"></div>' : '');
-                const dayData = rawData.filter(d => d.tgl.startsWith(dateStr));
                 const el = document.createElement('div');
                 el.className = `cal-day ${i===new Date().getDate()&&m===new Date().getMonth()?'today':''}`;
                 el.innerHTML = `${i}${dot}`;
