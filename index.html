@@ -15,9 +15,8 @@
         :root {
             --bg-dark: #0b0e14;
             --bg-card: #151a23;
-            --primary: #fbbf24; /* Emas */
-            --primary-glow: rgba(251, 191, 36, 0.3);
-            --accent: #3b82f6; /* Biru Neon */
+            --primary: #fbbf24; 
+            --accent: #3b82f6; 
             --text-main: #ffffff;
             --text-muted: #9ca3af;
             --border: #27272a;
@@ -42,7 +41,14 @@
         .app-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-top: 10px; }
         .logo { font-size: 1.8rem; font-weight: 900; background: linear-gradient(to right, var(--primary), #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1px; }
         .logo span { color: var(--text-main); -webkit-text-fill-color: var(--text-main); }
-        .avatar { width: 40px; height: 40px; background: var(--bg-card); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); font-size: 1.2rem; color: var(--primary); }
+        
+        .avatar { 
+            width: 45px; height: 45px; background: var(--bg-card); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; 
+            border: 1px solid var(--border); font-size: 1.4rem; color: var(--accent);
+            cursor: pointer; transition: 0.2s; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
+        }
+        .avatar:active { transform: scale(0.95); background: rgba(59, 130, 246, 0.1); }
 
         /* Cards */
         .glass-card {
@@ -58,7 +64,6 @@
         }
         
         .hero-card { background: linear-gradient(135deg, #1e293b, #0f172a); border: 1px solid var(--border); position: relative; }
-        .hero-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%); opacity: 0.15; animation: pulse 5s infinite; }
         
         .balance-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         .balance-amount { font-size: 2.2rem; font-weight: 700; margin: 5px 0; color: var(--text-main); text-shadow: 0 0 20px rgba(255,255,255,0.1); }
@@ -68,88 +73,36 @@
         .stat-item p { margin: 5px 0 0 0; font-size: 1.1rem; font-weight: 700; }
         .income { color: var(--success); }
         .expense { color: var(--danger); }
-
-        /* CALENDAR STYLES (NEW) */
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-        .cal-day-name { text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; padding-bottom: 10px; }
-        .cal-day {
-            aspect-ratio: 1; background: var(--bg-card); border-radius: 12px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            font-size: 0.9rem; cursor: pointer; position: relative; border: 1px solid transparent;
-            transition: 0.2s;
-        }
-        .cal-day:hover { background: #1f2937; border-color: var(--primary); }
-        .cal-day.today { border: 1px solid var(--primary); color: var(--primary); font-weight: 700; }
-        .cal-dot { width: 6px; height: 6px; border-radius: 50%; position: absolute; bottom: 6px; }
-        .cal-dot.green { background: var(--success); box-shadow: 0 0 5px var(--success); }
-        .cal-dot.red { background: var(--danger); box-shadow: 0 0 5px var(--danger); }
-
-        /* DETAIL MODAL (NEW) */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px;
-        }
-        .modal-card {
-            background: #151a23; width: 100%; max-width: 400px; border-radius: 20px; border: 1px solid var(--border);
-            padding: 25px; position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .detail-row:last-child { border: none; }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .badge-work { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .badge-off { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
-
-        /* Buttons */
-        .btn-fab {
-            position: fixed; bottom: 100px; right: 20px;
-            width: 60px; height: 60px;
-            background: var(--primary); color: #000; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 0 20px var(--primary-glow);
-            border: none; cursor: pointer; z-index: 100; transition: transform 0.2s;
-        }
-        .btn-fab:active { transform: scale(0.9); }
-        
-        .btn-primary {
-            width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), #f59e0b); 
-            border: none; border-radius: 10px; font-weight: 700; cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-primary:active { transform: scale(0.98); box-shadow: 0 0 15px var(--primary-glow); }
-
-        /* Navigation */
-        .nav-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 460px;
-            background: rgba(25, 30, 40, 0.9); backdrop-filter: blur(15px);
-            border-radius: 25px; border: 1px solid var(--border); height: 65px;
-            display: flex; justify-content: space-around; align-items: center;
-            z-index: 99; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-        }
-        .nav-item { color: var(--text-muted); font-size: 1.5rem; padding: 10px; transition: 0.3s; position: relative; }
-        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
-        .nav-item.active::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; background: var(--primary); border-radius: 50%; }
-
         /* Report Page Specific */
         .report-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
             margin-top: 20px;
-            margin-bottom: 25px;
         }
-        .report-card { background: var(--bg-card); padding: 15px; border-radius: 15px; border: 1px solid var(--border); }
+        .report-card { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid var(--border); }
 
-        /* Lists & Inputs */
+        /* Calendar & Lists */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .cal-day-name { text-align: center; color: var(--text-muted); font-size: 0.8rem; font-weight: 700; padding-bottom: 10px; }
+        .cal-day {
+            aspect-ratio: 1; background: var(--bg-card); border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-size: 0.9rem; cursor: pointer; position: relative; border: 1px solid transparent; transition: 0.2s;
+        }
+        .cal-day.today { border: 1px solid var(--primary); color: var(--primary); font-weight: 700; }
+        .cal-dot { width: 6px; height: 6px; border-radius: 50%; position: absolute; bottom: 6px; }
+        .cal-dot.green { background: var(--success); }
+        .cal-dot.blue { background: var(--accent); }
+        .cal-dot.red { background: var(--danger); }
+
         .list-group { display: flex; flex-direction: column; gap: 10px; }
         .list-item { 
             display: flex; justify-content: space-between; align-items: center; 
             padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.03);
-            transition: background-color 0.2s;
-            border-radius: 10px;
+            border-radius: 10px; transition: 0.2s; cursor: pointer;
         }
         .list-item:hover { background-color: rgba(255,255,255,0.03); }
         .list-icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-right: 15px; }
@@ -161,18 +114,65 @@
         }
         .input-dark:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(251, 191, 36, 0.1); }
         .label-dark { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px; display: block; }
+        .radio-group { display: flex; gap: 10px; margin-bottom: 15px; }
+        .radio-label { flex: 1; padding: 15px; border: 1px solid var(--border); border-radius: 10px; text-align: center; cursor: pointer; transition: 0.2s; background: rgba(0,0,0,0.2); font-size: 0.9rem; font-weight: 500; }
+        .radio-input { display: none; }
+        .radio-input:checked + .radio-label.opt-hadir { background: rgba(16, 185, 129, 0.2); border-color: var(--success); color: var(--success); font-weight: 700; }
+        .radio-input:checked + .radio-label.opt-libur { background: rgba(239, 68, 68, 0.2); border-color: var(--danger); color: var(--danger); font-weight: 700; }
+        .radio-input:checked + .radio-label.opt-absen { background: rgba(59, 130, 246, 0.2); border-color: var(--accent); color: var(--accent); font-weight: 700; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .badge-absent { background: rgba(59, 130, 246, 0.2); color: var(--accent); }
 
-        /* Utilities */
+        /* STAFF DETAIL SPECIFIC */
+        .staff-header { text-align: center; padding: 20px 0; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
+        .staff-name-lg { font-size: 1.5rem; font-weight: 900; color: var(--primary); }
+        .income-estimate { background: linear-gradient(45deg, #10b981, #059669); color: white; padding: 15px; border-radius: 15px; text-align: center; margin-top: 15px; }
+
+        /* UTILS */
         .hidden { display: none; }
         .fade-in { animation: fadeIn 0.5s ease-out forwards; }
-        .fade-out { animation: fadeOut 0.3s ease-in forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(10px); } }
         
-        /* Loader */
+        .btn-fab {
+            position: fixed; bottom: 100px; right: 20px;
+            width: 60px; height: 60px;
+            background: var(--primary); color: #000; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+            border: none; cursor: pointer; z-index: 100;
+        }
+        
+        .btn-primary { width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), #f59e0b); border: none; border-radius: 10px; font-weight: 700; cursor: pointer; color: black; }
+        
+        .nav-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 460px;
+            background: rgba(25, 30, 40, 0.9); backdrop-filter: blur(15px);
+            border-radius: 25px; border: 1px solid var(--border); height: 65px;
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 99; box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .nav-item { color: var(--text-muted); font-size: 1.5rem; padding: 10px; position: relative; }
+        .nav-item.active { color: var(--primary); transform: translateY(-5px); }
+        .staff-card { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 10px; }
+        
         #loader { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .loader-spin { width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s infinite linear; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Modal Fullscreen for Staff Detail */
+        .modal-full { position: fixed; inset: 0; background: var(--bg-dark); z-index: 200; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .modal-full-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        
+        /* Detail Modal */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 200; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { background: #151a23; width: 100%; max-width: 400px; border-radius: 20px; border: 1px solid var(--border); padding: 25px; position: relative; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .detail-row:last-child { border: none; }
+        .badge-work { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .badge-off { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+
+
     </style>
 </head>
 <body>
@@ -189,7 +189,9 @@
         <!-- HEADER -->
         <header class="app-header fade-in">
             <div class="logo">CUKUR<span>++</span></div>
-            <div class="avatar"><i class='bx bxs-user'></i></div>
+            <div class="avatar" onclick="startAbsentInput()" title="Absensi Karyawan">
+                <i class='bx bxs-user-detail'></i>
+            </div>
         </header>
 
         <!-- PAGE: HOME -->
@@ -197,14 +199,6 @@
             <div class="glass-card hero-card">
                 <div class="balance-label">Profit Bulan Ini</div>
                 <div class="balance-amount" id="disp_profit">Rp 0</div>
-                <div style="font-size:0.8rem; color: var(--text-muted); display:flex; align-items:center; justify-content: space-between; gap:5px; margin-top: 5px;">
-                    <div style="display:flex; align-items:center; gap:5px;">
-                        <i class='bx bx-trending-up' style="color:var(--success)"></i> <span id="disp_target_pct" style="color:var(--success); font-weight:700;">0%</span> tercapai
-                    </div>
-                    <div>
-                        Target: <span id="disp_target_amount" style="color:var(--text-main); font-weight:700;">Rp 0</span>
-                    </div>
-                </div>
                 <div class="stats-row">
                     <div class="stat-item"><h4>Pemasukan</h4><p class="income" id="disp_income">Rp 0</p></div>
                     <div class="stat-item"><h4>Pengeluaran</h4><p class="expense" id="disp_expense">Rp 0</p></div>
@@ -217,21 +211,45 @@
                 </div>
                 <canvas id="mainChart" height="200"></canvas>
             </div>
-            <div style="height:20px"></div>
         </div>
 
-        <!-- PAGE: CALENDAR (NEW) -->
+        <!-- PAGE: CALENDAR -->
         <div id="p-calendar" class="page hidden fade-in">
             <div class="cal-header">
                 <button onclick="changeCalMonth(-1)" style="background:none; border:none; color:white; font-size:1.5rem;"><i class='bx bx-chevron-left'></i></button>
                 <h3 id="calTitle" style="margin:0"></h3>
                 <button onclick="changeCalMonth(1)" style="background:none; border:none; color:white; font-size:1.5rem;"><i class='bx bx-chevron-right'></i></button>
             </div>
-            <div class="cal-grid" id="calendarGrid">
+            <div class="cal-grid" id="calendarGrid"></div>
+            <div style="display:flex; justify-content:center; gap:15px; margin-top:20px; font-size:0.8rem; color:var(--text-muted);">
+                <div><span style="color:var(--success)">●</span> Kerja</div>
+                <div><span style="color:var(--accent)">●</span> Absen</div>
+                <div><span style="color:var(--danger)">●</span> Libur</div>
+            </div>
+        </div>
+
+        <!-- PAGE: DAFTAR KARYAWAN (ABSENSI) -->
+        <div id="p-absent" class="page hidden fade-in">
+            <h2 style="margin-bottom:20px;">Daftar Karyawan</h2>
+            <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Klik nama untuk melihat detail gaji & kehadiran.</p>
+            <div id="staff-list-container" class="list-group">
                 <!-- Generated by JS -->
             </div>
-            <div style="text-align:center; margin-top:20px; font-size:0.8rem; color:var(--text-muted);">
-                <span style="color:var(--success)">●</span> Kerja &nbsp; <span style="color:var(--danger)">●</span> Libur
+        </div>
+
+        <!-- PAGE: REPORTS -->
+        <div id="p-reports" class="page hidden fade-in">
+            <h2 style="margin-bottom:20px;">Laporan</h2>
+            <div class="glass-card">
+                <select id="reportPeriod" class="input-dark" onchange="renderReport()">
+                    <option value="this_month">Bulan Ini</option>
+                    <option value="last_month">Bulan Lalu</option>
+                </select>
+                <div class="report-summary">
+                    <div class="report-card"><h4>Masuk</h4><p id="report_income" style="color:var(--success);">Rp 0</p></div>
+                    <div class="report-card"><h4>Keluar</h4><p id="report_expense" style="color:var(--danger);">Rp 0</p></div>
+                </div>
+                <button onclick="exportToCSV()" class="btn-primary" style="margin-top:20px; background:var(--accent);">EKSPOR CSV</button>
             </div>
         </div>
 
@@ -243,48 +261,42 @@
 
         <!-- PAGE: SETTINGS -->
         <div id="p-settings" class="page hidden fade-in">
-            <h2 style="margin-bottom:20px;">Pengaturan Toko</h2>
+            <h2 style="margin-bottom:20px;">Pengaturan</h2>
             <div class="glass-card">
-                <h4 style="margin-top:0; color:var(--primary); margin-bottom:15px;">Harga Layanan</h4>
-                <label class="label-dark">Dewasa Biasa</label><input type="number" id="set_db" class="input-dark">
-                <label class="label-dark">Dewasa Keramas</label><input type="number" id="set_dk" class="input-dark">
-                <label class="label-dark">Anak Biasa</label><input type="number" id="set_ab" class="input-dark">
-                <label class="label-dark">Anak Keramas</label><input type="number" id="set_ak" class="input-dark">
+                <h4 style="margin:0 0 15px; color:var(--primary);">Harga Layanan</h4>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div><label class="label-dark">Dws Biasa</label><input type="number" id="set_db" class="input-dark"></div>
+                    <div><label class="label-dark">Dws Krms</label><input type="number" id="set_dk" class="input-dark"></div>
+                    <div><label class="label-dark">Ank Biasa</label><input type="number" id="set_ab" class="input-dark"></div>
+                    <div><label class="label-dark">Ank Krms</label><input type="number" id="set_ak" class="input-dark"></div>
+                </div>
                 <button onclick="saveSettings()" class="btn-primary">SIMPAN HARGA</button>
             </div>
+            
             <div class="glass-card">
-                <h4 style="margin-top:0; color:var(--accent); margin-bottom:15px;">Manajemen</h4>
-                <label class="label-dark">Target Omzet Bulanan</label><input type="number" id="set_target" class="input-dark">
-                <label class="label-dark">PIN Keamanan (4 Digit, biarkan kosong untuk menonaktifkan)</label><input type="number" id="set_pin" class="input-dark" maxlength="4" placeholder="****">
-                <label class="label-dark">Daftar Barber (Pisah koma)</label><textarea id="set_staff" class="input-dark" rows="3"></textarea>
-                <button onclick="saveSettings()" class="btn-primary" style="background:var(--accent);">SIMPAN DATA</button>
-            </div>
-        </div>
-
-        <!-- PAGE: REPORTS (NEW) -->
-        <div id="p-reports" class="page hidden fade-in">
-            <h2 style="margin-bottom:20px;">Laporan Performa</h2>
-            <div class="glass-card">
-                <label class="label-dark">Pilih Periode Laporan</label>
-                <select id="reportPeriod" class="input-dark" onchange="renderReport()">
-                    <option value="this_month">Bulan Ini</option>
-                    <option value="last_month">Bulan Lalu</option>
-                    <option value="last_3_months">3 Bulan Terakhir</option>
-                </select>
-                <div class="report-summary">
-                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pemasukan</h4><p id="report_income" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--success);">Rp 0</p></div>
-                    <div class="report-card"><h4 style="margin:0; color:var(--text-muted); font-weight:500;">Total Pengeluaran</h4><p id="report_expense" style="margin:5px 0 0; font-weight:700; font-size:1.2rem; color:var(--danger);">Rp 0</p></div>
-                </div>
-                <div class="report-card" style="text-align:center; background: linear-gradient(45deg, var(--primary), #f59e0b); color:black;">
-                    <h4 style="margin:0; color:rgba(0,0,0,0.7); font-weight:500;">PROFIT BERSIH</h4>
-                    <p id="report_profit" style="margin:5px 0 0; font-weight:900; font-size:1.5rem;">Rp 0</p>
-                </div>
-                <button onclick="exportToCSV()" class="btn-primary" style="margin-top:20px; background:var(--accent);">EKSPOR KE CSV</button>
+                <h4 style="margin:0 0 15px; color:var(--accent);">Manajemen Karyawan</h4>
+                <div id="staff-management-container"></div>
+                <button onclick="addNewStaffUI()" class="btn-primary" style="background:rgba(59, 130, 246, 0.2); color:var(--accent); margin-bottom:15px;">+ Tambah Karyawan</button>
+                
+                <h4 style="margin:15px 0 10px; color:var(--text-muted);">Target & Admin</h4>
+                <label class="label-dark">Target Omzet</label><input type="number" id="set_target" class="input-dark">
+                <label class="label-dark">PIN Admin</label><input type="number" id="set_pin" class="input-dark" placeholder="4 digit">
+                
+                <button onclick="saveSettings()" class="btn-primary" style="background:var(--accent); color:white; margin-top:10px;">SIMPAN SEMUA KE SHEET</button>
             </div>
         </div>
     </div>
 
-    <!-- DETAIL MODAL -->
+    <!-- MODAL DETAIL KARYAWAN -->
+    <div id="staffDetailModal" class="modal-full">
+        <div class="modal-full-header">
+            <h3 style="margin:0">Detail Karyawan</h3>
+            <button onclick="closeStaffDetail()" style="background:none; border:none; color:white; font-size:1.5rem;"><i class='bx bx-x'></i></button>
+        </div>
+        <div id="staffDetailContent"></div>
+    </div>
+
+    <!-- DETAIL MODAL (from calendar) -->
     <div id="detailModal" class="modal-overlay" onclick="closeDetailModal(event)">
         <div class="modal-card" id="modalCard">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -296,32 +308,32 @@
             </div>
         </div>
     </div>
-
-    <!-- FLOATING ACTION BUTTON -->
-    <button class="btn-fab" onclick="openInput()"><i class='bx bx-plus'></i></button>
+    <!-- FAB: HANYA TRANSAKSI -->
+    <button class="btn-fab" onclick="showWorkInput()"><i class='bx bx-plus'></i></button>
 
     <!-- BOTTOM NAV -->
     <nav class="nav-bar">
         <div class="nav-item active" onclick="switchPage('home', this)"><i class='bx bxs-dashboard'></i></div>
+        <div class="nav-item" onclick="switchPage('absent', this)"><i class='bx bxs-user-account'></i></div>
         <div class="nav-item" onclick="switchPage('calendar', this)"><i class='bx bxs-calendar'></i></div>
-        <div class="nav-item" onclick="switchPage('reports', this)"><i class='bx bxs-report'></i></div>
-        <div class="nav-item" onclick="switchPage('history', this)"><i class='bx bx-time-five'></i></div> <!-- History moved -->
+        <div class="nav-item" onclick="switchPage('reports', this)"><i class='bx bxs-pie-chart-alt-2'></i></div>
+        <div class="nav-item" onclick="switchPage('history', this)"><i class='bx bx-list-ul'></i></div>
         <div class="nav-item" onclick="switchPage('settings', this)"><i class='bx bxs-cog'></i></div>
     </nav>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // --- CONFIGURATION ---
-        const ENDPOINT = "https://script.google.com/macros/s/AKfycbwjCiWJGphWui0sjI0subJNWUMkWbxSa0holEz_D_ch7Te65wBzLJMm5db8Ve4QIQoqpw/exec";
+        // GANTI URL DI BAWAH INI SETELAH ANDA DEPLOY ULANG GOOGLE SCRIPT ANDA
+        const ENDPOINT = "https://script.google.com/macros/s/AKfycbzc3642pMMFDvGUp6KB6PqrBCSAg3P-iYlbOMJ0_wmmf6v8LXhGv8pLFNZpX5M1oeaj3w/exec";
         
         let rawData = [];
+        let staffList = [];
         let chartInstance = null;
         let calDate = new Date();
         let settings = {
             prices: { db: 25000, dk: 30000, ab: 15000, ak: 20000 },
             target: 10000000,
-            staff: ["Owner", "Barber 1"],
-            pin: "" // PIN default kosong
+            pin: "" 
         };
 
         window.onload = () => {
@@ -331,39 +343,39 @@
 
         function loadLocalSettings() {
             const s = localStorage.getItem('cukur_settings');
-            if(s) settings = JSON.parse(s);
+            if(s) {
+                const parsed = JSON.parse(s);
+                settings.prices = parsed.prices || settings.prices;
+                settings.target = parsed.target || settings.target;
+                settings.pin = parsed.pin || settings.pin;
+            }
             document.getElementById('set_db').value = settings.prices.db;
             document.getElementById('set_dk').value = settings.prices.dk;
             document.getElementById('set_ab').value = settings.prices.ab;
             document.getElementById('set_ak').value = settings.prices.ak;
             document.getElementById('set_target').value = settings.target;
             document.getElementById('set_pin').value = settings.pin;
-            document.getElementById('set_staff').value = settings.staff.join(", ");
-        }
-
-        function saveSettings() {
-            settings.prices.db = parseInt(document.getElementById('set_db').value) || 0;
-            settings.prices.dk = parseInt(document.getElementById('set_dk').value) || 0;
-            settings.prices.ab = parseInt(document.getElementById('set_ab').value) || 0;
-            settings.prices.ak = parseInt(document.getElementById('set_ak').value) || 0;
-            settings.target = parseInt(document.getElementById('set_target').value) || 0;
-            settings.pin = document.getElementById('set_pin').value || "";
-            settings.staff = document.getElementById('set_staff').value.split(',').map(s=>s.trim());
-            localStorage.setItem('cukur_settings', JSON.stringify(settings));
-            Swal.fire({ icon: 'success', title: 'Tersimpan!', toast: true, position: 'top-end', showConfirmButton: false, timer: 1500, background:'#151a23', color:'#fff' });
-            refreshUI();
         }
 
         function fetchData() {
             fetch(ENDPOINT)
             .then(res => res.json())
             .then(data => {
-                rawData = data;
+                rawData = data.transactions || []; // Struktur baru
+                staffList = data.staff || []; // Ambil staff dari sheet
+                
+                // Jika sheet kosong, pakai default
+                if(staffList.length === 0) {
+                     staffList = [{name: "Owner", salary: 0, commission: 0, pin: "1234"}];
+                }
+                
                 document.getElementById('loader').style.display = 'none';
+                renderStaffManagement(); // Render ulang setting dengan data dari sheet
                 refreshUI();
             })
             .catch(err => {
-                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', background:'#151a23', color:'#fff'});
+                console.error(err);
+                Swal.fire({icon: 'error', title: 'Gagal Memuat Data', text: 'Pastikan Script sudah dideploy ulang', background:'#151a23', color:'#fff'});
                 document.getElementById('loader').style.display = 'none';
             });
         }
@@ -372,107 +384,265 @@
             renderDashboard();
             renderCalendar();
             renderHistory();
-            renderReport(); // Initial render for reports page
+            renderStaffList(); // Render halaman absen baru
+            renderReport();
         }
 
-        function fmtMoney(n) { return "Rp " + parseInt(n).toLocaleString('id-ID'); }
+        // --- MANAJEMEN KARYAWAN (SETTINGS) ---
+        function renderStaffManagement() {
+            const container = document.getElementById('staff-management-container');
+            container.innerHTML = '';
+            staffList.forEach((staff, index) => {
+                container.innerHTML += `
+                    <div class="staff-card">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                            <strong style="color:white;">${staff.name}</strong>
+                            <div style="display:flex; gap:10px;">
+                                <button onclick="toggleStaffEdit(this)" style="background:none; border:none; color:var(--text-muted);"><i class='bx bx-edit'></i></button>
+                                <button onclick="deleteStaff(${index})" style="background:none; border:none; color:var(--danger);"><i class='bx bx-trash'></i></button>
+                            </div>
+                        </div>
+                        <div class="staff-card-body" style="display:none;">
+                            <label class="label-dark">Nama</label><input type="text" class="input-dark staff-name" value="${staff.name}">
+                            <label class="label-dark">Gaji Harian (Rp)</label><input type="number" class="input-dark staff-salary" value="${staff.salary}">
+                            <label class="label-dark">Komisi (%)</label><input type="number" class="input-dark staff-commission" value="${staff.commission}" placeholder="0">
+                            <label class="label-dark">PIN (4 Digit)</label><input type="number" class="input-dark staff-pin" value="${staff.pin}" maxlength="4">
+                        </div>
+                    </div>`;
+            });
+        }
 
-        // --- DASHBOARD ---
-        function renderDashboard() {
-            const now = new Date();
-            const thisMonthData = rawData.filter(d => d.bln == (now.getMonth() + 1) && d.thn == now.getFullYear());
-            let inc = 0, exp = 0;
-            thisMonthData.forEach(d => {
-                if(d.stat !== 'Libur') {
-                    inc += parseInt(d.masuk) || 0;
-                    exp += parseInt(d.keluar) || 0;
+        function saveSettings() {
+            // Simpan harga & target lokal
+            settings.prices.db = parseInt(document.getElementById('set_db').value) || 0;
+            settings.prices.dk = parseInt(document.getElementById('set_dk').value) || 0;
+            settings.prices.ab = parseInt(document.getElementById('set_ab').value) || 0;
+            settings.prices.ak = parseInt(document.getElementById('set_ak').value) || 0;
+            settings.target = parseInt(document.getElementById('set_target').value) || 0;
+            settings.pin = document.getElementById('set_pin').value || "";
+            localStorage.setItem('cukur_settings', JSON.stringify(settings));
+
+            // Ambil data staff dari DOM
+            const newStaff = [];
+            document.querySelectorAll('#staff-management-container .staff-card').forEach(card => {
+                const name = card.querySelector('.staff-name').value.trim();
+                if (name) {
+                    newStaff.push({ 
+                        name: name, 
+                        salary: parseInt(card.querySelector('.staff-salary').value) || 0, 
+                        commission: parseInt(card.querySelector('.staff-commission').value) || 0,
+                        pin: card.querySelector('.staff-pin').value.padStart(4, '0') 
+                    });
                 }
             });
-            const profit = inc - exp;
-            const targetPct = Math.min(100, Math.round((profit / settings.target) * 100));
+            staffList = newStaff;
 
-            document.getElementById('disp_profit').innerText = fmtMoney(profit);
-            document.getElementById('disp_income').innerText = fmtMoney(inc);
-            document.getElementById('disp_expense').innerText = fmtMoney(exp);
-            document.getElementById('disp_target_pct').innerText = targetPct + "%";
-            document.getElementById('disp_target_amount').innerText = fmtMoney(settings.target);
-            renderChart();
+            // Simpan ke Google Sheet
+            Swal.fire({ title: 'Menyimpan Karyawan...', didOpen: () => Swal.showLoading(), background: '#151a23', color: '#fff' });
+            const fd = new FormData();
+            fd.append('action', 'save_staff');
+            fd.append('staff_data', JSON.stringify(newStaff));
+
+            fetch(ENDPOINT, { method: 'POST', body: fd })
+            .then(res => res.json())
+            .then(d => {
+                Swal.fire({ icon: 'success', title: 'Tersimpan!', background:'#151a23', color:'#fff', timer: 1500, showConfirmButton: false });
+                renderStaffList();
+            })
+            .catch(() => Swal.fire({ icon: 'error', title: 'Gagal Save Sheet', background:'#151a23', color:'#fff' }));
+        }
+        
+        function addNewStaffUI() {
+            staffList.push({ name: "Baru", salary: 0, commission: 0, pin: "0000" });
+            renderStaffManagement();
+            // Expand last
+            const btns = document.querySelectorAll('#staff-management-container button i.bx-edit');
+            if(btns.length > 0) btns[btns.length-1].parentElement.click();
+        }
+        
+        function toggleStaffEdit(btn) {
+            const body = btn.closest('.staff-card').querySelector('.staff-card-body');
+            body.style.display = body.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        function deleteStaff(idx) {
+            staffList.splice(idx, 1);
+            renderStaffManagement();
         }
 
-        function renderChart() {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            const labels = [], dataPts = [];
-            for(let i=6; i>=0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const dayStr = d.getDate() + '/' + (d.getMonth()+1);
-                const matchStr = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-                let daySum = 0;
-                rawData.forEach(r => {
-                    if(r.tgl.includes(matchStr) && r.stat !== 'Libur') daySum += parseInt(r.masuk);
-                });
-                labels.push(dayStr);
-                dataPts.push(daySum);
-            }
-            if(chartInstance) chartInstance.destroy();
-            chartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Omzet', data: dataPts, borderColor: '#fbbf24', backgroundColor: 'rgba(251, 191, 36, 0.1)',
-                        borderWidth: 3, tension: 0.4, fill: true, pointBackgroundColor: '#151a23', pointBorderColor: '#fbbf24'
-                    }]
-                },
-                options: { responsive: true, plugins: { legend: {display: false} }, scales: { x: { display:false }, y: { display:false } } }
+        // --- HALAMAN ABSENSI (DAFTAR STAFF) ---
+        function renderStaffList() {
+            const container = document.getElementById('staff-list-container');
+            container.innerHTML = '';
+            staffList.forEach(s => {
+                container.innerHTML += `
+                    <div class="list-item" onclick="openStaffDetail('${s.name}')">
+                        <div style="display:flex; align-items:center;">
+                            <div class="list-icon" style="color:var(--primary)"><i class='bx bxs-user'></i></div>
+                            <div style="font-weight:700;">${s.name}</div>
+                        </div>
+                        <i class='bx bx-chevron-right' style="color:var(--text-muted)"></i>
+                    </div>`;
             });
         }
 
-        // --- CALENDAR LOGIC (NEW) ---
-        function renderCalendar() {
-            const grid = document.getElementById('calendarGrid');
-            const title = document.getElementById('calTitle');
-            grid.innerHTML = "";
+        function openStaffDetail(name) {
+            const staff = staffList.find(s => s.name === name);
+            if(!staff) return;
+
+            const modal = document.getElementById('staffDetailModal');
+            const content = document.getElementById('staffDetailContent');
             
-            const m = calDate.getMonth();
-            const y = calDate.getFullYear();
-            const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-            title.innerText = `${monthNames[m]} ${y}`;
-
-            ["Min","Sen","Sel","Rab","Kam","Jum","Sab"].forEach(d => {
-                grid.innerHTML += `<div class="cal-day-name">${d}</div>`;
+            // Filter Data Bulan Ini
+            const now = new Date();
+            const filtered = rawData.filter(d => {
+                const parts = d.tgl.split(' ')[0].split('/');
+                return d.barber === name && parseInt(parts[1]) === (now.getMonth() + 1) && parseInt(parts[2]) === now.getFullYear();
             });
 
-            const firstDay = new Date(y, m, 1).getDay();
-            const daysInMonth = new Date(y, m + 1, 0).getDate();
-            const today = new Date();
+            // Hitung Statistik
+            let daysWork = 0;
+            let daysOff = 0;
+            let totalRevenue = 0;
+            let listHtml = '';
 
-            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
-
-            for(let i=1; i<=daysInMonth; i++) {
-                const dateStr = `${i}/${m+1}/${y}`;
-                const dayData = rawData.filter(d => d.tgl.includes(dateStr) || d.tgl == `'${dateStr}`);
-                
-                let dot = "";
-                if(dayData.length > 0) {
-                    const isLibur = dayData.some(d => d.stat === 'Libur');
-                    dot = `<div class="cal-dot ${isLibur ? 'red' : 'green'}"></div>`;
+            filtered.reverse().forEach(d => {
+                let statusBadge = '';
+                if(d.stat === 'Kerja' || d.stat === 'Hadir') {
+                    daysWork++;
+                    statusBadge = `<span class="badge" style="background:rgba(16,185,129,0.2); color:var(--success)">MASUK</span>`;
+                    totalRevenue += (parseInt(d.masuk) || 0);
+                } else if (d.stat === 'Absen') {
+                    daysOff++;
+                    statusBadge = `<span class="badge badge-absent">IZIN</span>`;
                 }
 
-                let cls = "cal-day";
-                if(i === today.getDate() && m === today.getMonth() && y === today.getFullYear()) cls += " today";
+                // Baris Riwayat
+                let desc = d.stat === 'Kerja' ? `Omzet: Rp ${(parseInt(d.masuk)||0).toLocaleString()}` : (d.alasan || 'Masuk Kerja');
+                listHtml += `
+                    <div class="list-item" style="cursor:default;">
+                        <div>
+                            <div style="font-weight:700;">${d.tgl.split(' ')[0]}</div>
+                            <div style="font-size:0.8rem; color:var(--text-muted);">${desc}</div>
+                        </div>
+                        ${statusBadge}
+                    </div>`;
+            });
 
-                const el = document.createElement('div');
-                el.className = cls;
-                el.innerHTML = `${i} ${dot}`;
-                el.onclick = () => openDateDetail(i, m, y, dayData);
-                grid.appendChild(el);
+            // Hitung Estimasi Gaji
+            // Rumus: (Hari Kerja * Gaji Harian) + (Total Omzet * Komisi%)
+            const baseSalary = daysWork * staff.salary;
+            const commAmount = totalRevenue * (staff.commission / 100);
+            const totalIncome = baseSalary + commAmount;
+
+            content.innerHTML = `
+                <div class="staff-header">
+                    <div class="staff-name-lg">${name}</div>
+                    <div style="font-size:0.9rem; color:var(--text-muted);">Bulan Ini</div>
+                </div>
+                
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                    <div class="report-card" style="text-align:center;">
+                        <div style="font-size:0.8rem; color:var(--text-muted)">Hari Kerja</div>
+                        <div style="font-size:1.5rem; font-weight:700; color:var(--success)">${daysWork}</div>
+                    </div>
+                    <div class="report-card" style="text-align:center;">
+                        <div style="font-size:0.8rem; color:var(--text-muted)">Hari Libur</div>
+                        <div style="font-size:1.5rem; font-weight:700; color:var(--accent)">${daysOff}</div>
+                    </div>
+                </div>
+
+                <div class="income-estimate">
+                    <div style="font-size:0.8rem; opacity:0.9;">ESTIMASI PENDAPATAN</div>
+                    <div style="font-size:1.8rem; font-weight:900;">Rp ${parseInt(totalIncome).toLocaleString('id-ID')}</div>
+                    <div style="font-size:0.7rem; margin-top:5px;">(Gaji: ${daysWork}x${staff.salary/1000}k + Komisi: ${staff.commission}%)</div>
+                </div>
+
+                <h4 style="margin:20px 0 10px; color:var(--text-muted);">Riwayat Kehadiran</h4>
+                <div class="list-group">${listHtml || '<div style="text-align:center; color:gray">Belum ada data bulan ini</div>'}</div>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        function closeStaffDetail() {
+            document.getElementById('staffDetailModal').style.display = 'none';
+        }
+
+        // --- INPUT FLOW ---
+        async function showWorkInput() {
+            const staffOpt = staffList.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+            const html = `
+                <div style="text-align:left; color:white;">
+                    <label class="label-dark">Barber</label><select id="sw_staff" class="input-dark" style="background:#0b0e14">${staffOpt}</select>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+                        <div><label class="label-dark">Dws Biasa</label><input type="number" id="q_db" class="input-dark" placeholder="0"></div>
+                        <div><label class="label-dark">Dws Krms</label><input type="number" id="q_dk" class="input-dark" placeholder="0"></div>
+                        <div><label class="label-dark">Ank Biasa</label><input type="number" id="q_ab" class="input-dark" placeholder="0"></div>
+                        <div><label class="label-dark">Ank Krms</label><input type="number" id="q_ak" class="input-dark" placeholder="0"></div>
+                    </div>
+                    <div style="border-top:1px solid #333; padding-top:10px;">
+                        <label class="label-dark" style="color:#ef4444">Pengeluaran (Opsional)</label>
+                        <div style="display:flex; gap:10px;"><input type="number" id="q_exp" class="input-dark" placeholder="Rp"><input type="text" id="q_ket" class="input-dark" placeholder="Ket"></div>
+                    </div>
+                </div>`;
+            
+            const result = await Swal.fire({
+                title: 'Catat Transaksi', html: html, background: '#151a23', color: '#fff',
+                showCancelButton: true, confirmButtonColor: '#fbbf24', confirmButtonText: 'Simpan',
+                preConfirm: () => {
+                    return { 
+                        barber: document.getElementById('sw_staff').value, 
+                        db: document.getElementById('q_db').value || 0, dk: document.getElementById('q_dk').value || 0, 
+                        ab: document.getElementById('q_ab').value || 0, ak: document.getElementById('q_ak').value || 0, 
+                        exp: document.getElementById('q_exp').value || 0, ket: document.getElementById('q_ket').value || '-' 
+                    }
+                }
+            });
+            
+            if(result.isConfirmed) {
+                const d = result.value;
+                const p = settings.prices;
+                const total = (d.db * p.db) + (d.dk * p.dk) + (d.ab * p.ab) + (d.ak * p.ak);
+                submitData({ status: 'Kerja', tanggal: getNowTimestamp(), barber_name: d.barber, layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}), total_uang: total, pengeluaran: d.exp, desc_pengeluaran: d.ket });
             }
         }
 
-        function changeCalMonth(dir) {
-            calDate.setMonth(calDate.getMonth() + dir);
-            renderCalendar();
+        async function startAbsentInput() {
+            const staffOpt = staffList.map(s => `<option value="${s.name}">${s.name}</option>`).join('');
+            const { value: formValues } = await Swal.fire({
+                title: 'Absensi Karyawan',
+                html: `
+                    <div style="text-align:left">
+                        <label class="label-dark">Nama Karyawan</label>
+                        <select id="sw_staff_absen" class="input-dark" style="background:#0b0e14; margin-bottom:15px;">${staffOpt}</select>
+                        <label class="label-dark">Status</label>
+                        <div class="radio-group">
+                            <input type="radio" id="st_hadir" name="status" value="Hadir" class="radio-input" checked onchange="document.getElementById('div_alasan').style.display='none'">
+                            <label for="st_hadir" class="radio-label opt-hadir">Masuk</label>
+                            <input type="radio" id="st_absen" name="status" value="Absen" class="radio-input" onchange="document.getElementById('div_alasan').style.display='block'">
+                            <label for="st_absen" class="radio-label opt-absen">Izin/Libur</label>
+                        </div>
+                        <div id="div_alasan" style="display:none;"><label class="label-dark">Alasan</label><input id="sw_alasan_absen" class="input-dark"></div>
+                    </div>`,
+                background: '#151a23', color: '#fff', confirmButtonColor: '#3b82f6', confirmButtonText: 'Lanjut', showCancelButton: true,
+                preConfirm: () => {
+                    const staff = document.getElementById('sw_staff_absen').value;
+                    const status = document.querySelector('input[name="status"]:checked').value;
+                    const alasan = document.getElementById('sw_alasan_absen').value;
+                    if(status === 'Absen' && !alasan) { Swal.showValidationMessage('Isi alasan jika libur'); return false; }
+                    return { staff, status, alasan };
+                }
+            });
+
+            if (formValues) {
+                const staffData = staffList.find(s => s.name === formValues.staff);
+                if(staffData && staffData.pin) {
+                    const { value: pin } = await Swal.fire({ title: `PIN ${formValues.staff}`, input: 'password', background: '#151a23', color: '#fff', confirmButtonColor: '#3b82f6' });
+                    if (pin !== staffData.pin) return Swal.fire({ icon: 'error', title: 'PIN Salah', background:'#151a23', color:'#fff' });
+                }
+                submitData({ status: formValues.status, tanggal: getNowTimestamp(), barber_name: formValues.staff, alasan_libur: formValues.status==='Hadir'?'Masuk Kerja':formValues.alasan });
+            }
         }
 
         function openDateDetail(d, m, y, data) {
@@ -488,62 +658,61 @@
                 content.innerHTML = "<div style='text-align:center; color:gray; padding:20px;'>Tidak ada data pada tanggal ini.</div>";
             } else {
                 let totalDayIncome = 0;
-                
-                // Cek status libur
-                const liburData = data.find(x => x.stat === "Libur");
-                if(liburData) {
-                    content.innerHTML += `
-                        <div style="background:rgba(239, 68, 68, 0.1); padding:15px; border-radius:10px; border:1px solid var(--danger); text-align:center; margin-bottom:15px;">
-                            <h3 style="margin:0; color:var(--danger)">LIBUR OPERASIONAL</h3>
-                            <p style="margin:5px 0 0 0; font-size:0.9rem;">Alasan: ${liburData.alasan}</p>
-                        </div>
-                    `;
-                } else {
-                    // Tampilkan ringkasan transaksi
-                    let listHtml = "";
-                    data.forEach(item => {
-                        const inc = parseInt(item.masuk);
-                        const exp = parseInt(item.keluar);
-                        totalDayIncome += inc;
+                let listHtml = "";
 
-                        if(inc > 0) {
-                             listHtml += `
-                                <div class="detail-row">
-                                    <div>
-                                        <div style="font-weight:700;">${item.barber}</div>
-                                        <div style="font-size:0.75rem; color:var(--text-muted);">Pendapatan Jasa</div>
-                                    </div>
-                                    <div style="text-align:right;">
-                                        <div style="color:var(--success); font-weight:700;">+${fmtMoney(inc)}</div>
-                                        <span class="badge badge-work">Masuk</span>
-                                    </div>
-                                </div>
-                             `;
-                        }
-                        if(exp > 0) {
-                            listHtml += `
-                                <div class="detail-row">
-                                    <div>
-                                        <div style="font-weight:700;">Pengeluaran</div>
-                                        <div style="font-size:0.75rem; color:var(--text-muted);">${item.ket || '-'}</div>
-                                    </div>
-                                    <div style="text-align:right;">
-                                        <div style="color:var(--danger); font-weight:700;">-${fmtMoney(exp)}</div>
-                                        <span class="badge badge-off">Keluar</span>
-                                    </div>
-                                </div>
-                             `;
-                        }
-                    });
+                data.forEach(item => {
+                    const inc = parseInt(item.masuk) || 0;
+                    const exp = parseInt(item.keluar) || 0;
+                    totalDayIncome += inc;
 
-                    content.innerHTML += `
-                        <div style="margin-bottom:20px; text-align:center;">
-                            <span style="font-size:0.8rem; color:var(--text-muted);">TOTAL PEMASUKAN HARI INI</span>
-                            <h2 style="margin:5px 0; color:var(--primary);">${fmtMoney(totalDayIncome)}</h2>
-                        </div>
-                        <div style="max-height:200px; overflow-y:auto;">${listHtml}</div>
-                    `;
-                }
+                    if (item.stat === 'Kerja' && inc > 0) {
+                         listHtml += `
+                            <div class="detail-row">
+                                <div>
+                                    <div style="font-weight:700;">${item.barber}</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">Pendapatan Jasa</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:var(--success); font-weight:700;">+Rp ${inc.toLocaleString('id-ID')}</div>
+                                    <span class="badge badge-work">Masuk</span>
+                                </div>
+                            </div>
+                         `;
+                    }
+                    if (item.stat === 'Kerja' && exp > 0) {
+                        listHtml += `
+                            <div class="detail-row">
+                                <div>
+                                    <div style="font-weight:700;">Pengeluaran</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">${item.ket || '-'}</div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:var(--danger); font-weight:700;">-Rp ${exp.toLocaleString('id-ID')}</div>
+                                    <span class="badge badge-off">Keluar</span>
+                                </div>
+                            </div>
+                         `;
+                    }
+                    if (item.stat === 'Absen') {
+                        listHtml += `
+                            <div class="detail-row">
+                                <div>
+                                    <div style="font-weight:700;">${item.barber} (Absen)</div>
+                                    <div style="font-size:0.75rem; color:var(--text-muted);">${item.alasan || '-'}</div>
+                                </div>
+                                <span class="badge badge-absent">IZIN</span>
+                            </div>
+                         `;
+                    }
+                });
+
+                content.innerHTML += `
+                    <div style="margin-bottom:20px; text-align:center;">
+                        <span style="font-size:0.8rem; color:var(--text-muted);">TOTAL PEMASUKAN HARI INI</span>
+                        <h2 style="margin:5px 0; color:var(--primary);">Rp ${totalDayIncome.toLocaleString('id-ID')}</h2>
+                    </div>
+                    <div style="max-height:200px; overflow-y:auto;">${listHtml}</div>
+                `;
             }
 
             modal.style.display = "flex";
@@ -555,202 +724,113 @@
             }
         }
 
-        // --- HISTORY ---
-        function renderHistory() {
-            const container = document.getElementById('history-container');
-            container.innerHTML = '';
-            const list = [...rawData].reverse().slice(0, 20);
-            if(list.length === 0) { container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-muted)">Belum ada data</div>'; return; }
-            list.forEach(item => {
-                const isLibur = item.stat === 'Libur', isExp = parseInt(item.keluar) > 0;
-                let icon = isLibur ? 'bx-calendar-x' : 'bx-cut', color = isLibur ? 'var(--danger)' : 'var(--primary)';
-                if(isExp && !isLibur) { icon = 'bx-wallet'; color = 'var(--accent)'; }
-                let title = isLibur ? "Libur Operasional" : (item.barber || "Transaksi");
-                let sub = item.tgl.replace("'","");
-                if(item.stat !== 'Libur' && item.ket !== '-') sub += " • " + item.ket;
-                if(isLibur) sub += " • " + item.alasan;
-                let val = isLibur ? "OFF" : (isExp ? `<span style="color:var(--danger)">-${parseInt(item.keluar)/1000}k</span>` : `<span style="color:var(--success)">+${parseInt(item.masuk)/1000}k</span>`);
-                const el = document.createElement('div'); el.className = 'list-item fade-in';
-                el.innerHTML = `<div style="display:flex; align-items:center;"><div class="list-icon" style="color:${color}"><i class='bx ${icon}'></i></div><div><div style="font-weight:700; font-size:0.95rem;">${title}</div><div style="font-size:0.75rem; color:var(--text-muted);">${sub}</div></div></div><div style="font-weight:700;">${val}</div>`;
-                container.appendChild(el);
-            });
-        }
-
-        // --- REPORTS (NEW) ---
-        function getReportData() {
-            const period = document.getElementById('reportPeriod').value;
-            const now = new Date();
-            let startDate, endDate = new Date();
-
-            switch(period) {
-                case 'last_month':
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                    endDate = new Date(now.getFullYear(), now.getMonth(), 0);
-                    break;
-                case 'last_3_months':
-                    startDate = new Date(now.getFullYear(), now.getMonth() - 2, 1);
-                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                    break;
-                case 'this_month':
-                default:
-                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                    endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-            }
-            
-            // Set time to start/end of day for accurate comparison
-            startDate.setHours(0,0,0,0);
-            endDate.setHours(23,59,59,999);
-
-            const filteredData = rawData.filter(d => {
-                // Handle different date formats like 'DD/MM/YYYY' or 'DD/MM/YYYY HH:mm:ss'
-                const dateParts = d.tgl.replace(/'/g, "").split(' ')[0].split('/');
-                if (dateParts.length !== 3) return false;
-                const itemDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
-                return itemDate >= startDate && itemDate <= endDate;
-            });
-
-            return filteredData;
-        }
-
-        function renderReport() {
-            const data = getReportData();
-            let inc = 0, exp = 0;
-            data.forEach(d => {
-                if(d.stat !== 'Libur') {
-                    inc += parseInt(d.masuk) || 0;
-                    exp += parseInt(d.keluar) || 0;
-                }
-            });
-            const profit = inc - exp;
-
-            document.getElementById('report_income').innerText = fmtMoney(inc);
-            document.getElementById('report_expense').innerText = fmtMoney(exp);
-            document.getElementById('report_profit').innerText = fmtMoney(profit);
-        }
-
-        function exportToCSV() {
-            const data = getReportData();
-            if (data.length === 0) {
-                Swal.fire({ icon: 'info', title: 'Tidak Ada Data', text: 'Tidak ada data untuk diekspor pada periode ini.', background:'#151a23', color:'#fff' });
-                return;
-            }
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Tanggal,Status,Barber,Pemasukan,Pengeluaran,Keterangan\n";
-
-            data.forEach(row => {
-                const tgl = row.tgl.replace(/'/g, "");
-                const ket = `"${(row.ket || row.alasan || '-').replace(/"/g, '""')}"`; // Escape quotes
-                const line = [tgl, row.stat, row.barber || '-', row.masuk || 0, row.keluar || 0, ket].join(",");
-                csvContent += line + "\n";
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            const period = document.getElementById('reportPeriod').value;
-            link.setAttribute("download", `laporan_cukur_${period}_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-        
-        async function askForPin(callback) {
-            const { value: pin } = await Swal.fire({
-                title: 'Masukkan PIN Keamanan',
-                input: 'password',
-                inputLabel: 'Halaman ini dilindungi',
-                inputPlaceholder: 'Masukkan PIN 4 digit',
-                inputAttributes: { maxlength: 4, autocapitalize: 'off', autocorrect: 'off' },
-                background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24',
-                showCancelButton: true
-            });
-
-            if (pin === settings.pin) {
-                callback();
-            } else if (pin !== undefined) { // Jika user input sesuatu tapi salah
-                Swal.fire({ icon: 'error', title: 'PIN Salah!', background:'#151a23', color:'#fff' });
-            }
-        }
-
-        window.switchPage = (pageId, el) => {
-            // Jika target adalah halaman setting DAN pin sudah diatur, minta pin dulu
-            if (pageId === 'settings' && settings.pin && settings.pin.length > 0) {
-                askForPin(() => proceedSwitchPage(pageId, el));
-                return;
-            }
-            
-            // Langsung pindah halaman jika bukan halaman setting atau pin belum diatur
-            proceedSwitchPage(pageId, el);
-        }
-
-        function proceedSwitchPage(pageId, el) {
-            const currentPage = document.querySelector('.page:not(.hidden)');
-            const nextPage = document.getElementById('p-'+pageId);
-            if(currentPage === nextPage) return;
-
-            currentPage.classList.add('fade-out');
-            setTimeout(() => {
-                currentPage.classList.add('hidden');
-                currentPage.classList.remove('fade-out');
-                nextPage.classList.remove('hidden');
-                nextPage.classList.add('fade-in');
-            }, 300);
-
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(el) el.classList.add('active');
-        }
-
-        // --- INPUT FLOW ---
-        async function openInput() {
-            const { value: status } = await Swal.fire({ title: 'Status Hari Ini', input: 'radio', inputOptions: { 'Kerja': '✂️ Kerja', 'Libur': '⛔ Libur' }, inputValue: 'Kerja', background: '#151a23', color: '#fff', confirmButtonColor: '#fbbf24' });
-            if(!status) return;
-            if(status === 'Libur') {
-                const { value: reason } = await Swal.fire({ title: 'Alasan Libur', input: 'text', inputPlaceholder: 'Contoh: Sakit, Cuti, dll.', background: '#151a23', color: '#fff', confirmButtonColor: '#ef4444' });
-                if(reason) submitData({status: 'Libur', alasan_libur: reason, tanggal: getNowTimestamp()});
-            } else { showWorkInput(); }
-        }
-
-        async function showWorkInput() {
-            const p = settings.prices;
-            const staffOpt = settings.staff.map(s => `<option value="${s}">${s}</option>`).join('');
-            const html = `
-                <div style="text-align:left; color:white;">
-                    <label class="label-dark">Barber</label><select id="sw_staff" class="input-dark" style="background:#0b0e14">${staffOpt}</select>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
-                        <div><label class="label-dark">Dws Biasa</label><input type="number" id="q_db" class="input-dark" placeholder="0"></div>
-                        <div><label class="label-dark">Dws Keramas</label><input type="number" id="q_dk" class="input-dark" placeholder="0"></div>
-                        <div><label class="label-dark">Ank Biasa</label><input type="number" id="q_ab" class="input-dark" placeholder="0"></div>
-                        <div><label class="label-dark">Ank Keramas</label><input type="number" id="q_ak" class="input-dark" placeholder="0"></div>
-                    </div>
-                    <div style="border-top:1px solid #333; padding-top:10px;">
-                        <label class="label-dark" style="color:#ef4444">Pengeluaran (Opsional)</label>
-                        <div style="display:flex; gap:10px;"><input type="number" id="q_exp" class="input-dark" placeholder="Rp"><input type="text" id="q_ket" class="input-dark" placeholder="Ket"></div>
-                    </div>
-                </div>`;
-            const result = await Swal.fire({ title: 'Input Transaksi', html: html, background: '#151a23', color: '#fff', showCancelButton: true, confirmButtonColor: '#fbbf24', confirmButtonText: 'Simpan', cancelButtonColor: '#333', preConfirm: () => {
-                return { barber: document.getElementById('sw_staff').value, db: document.getElementById('q_db').value || 0, dk: document.getElementById('q_dk').value || 0, ab: document.getElementById('q_ab').value || 0, ak: document.getElementById('q_ak').value || 0, exp: document.getElementById('q_exp').value || 0, ket: document.getElementById('q_ket').value || '-' }
-            }});
-            if(result.isConfirmed) {
-                const d = result.value;
-                const total = (d.db * p.db) + (d.dk * p.dk) + (d.ab * p.ab) + (d.ak * p.ak);
-                submitData({ status: 'Kerja', tanggal: getNowTimestamp(), barber_name: d.barber, layanan_detail: JSON.stringify({db: d.db, dk: d.dk, ab: d.ab, ak: d.ak}), total_uang: total, pengeluaran: d.exp, desc_pengeluaran: d.ket });
-            }
-        }
-
         function submitData(dataObj) {
-            Swal.fire({ title: 'Menyimpan...', didOpen: () => Swal.showLoading(), background: '#151a23', color: '#fff' });
+            Swal.fire({ title: 'Proses...', didOpen: () => Swal.showLoading(), background: '#151a23', color: '#fff' });
             const fd = new FormData(); for(let k in dataObj) fd.append(k, dataObj[k]);
             fetch(ENDPOINT, { method: 'POST', body: fd }).then(res => res.json()).then(d => {
-                if(d.result === 'success') { Swal.fire({ icon:'success', title:'Berhasil', background:'#151a23', color:'#fff', timer:1500, showConfirmButton:false }); fetchData(); } else throw new Error(d.error);
-            }).catch(e => Swal.fire({ icon:'error', title:'Error', background:'#151a23', color:'#fff'}));
+                if(d.result === 'success') { Swal.fire({ icon:'success', title:'Sukses', background:'#151a23', color:'#fff', timer:1000, showConfirmButton:false }); fetchData(); } 
+                else {
+                    // Coba parsing message jika itu adalah JSON string
+                    let errorMessage = d.message;
+                    try {
+                        const parsedError = JSON.parse(d.message);
+                        if(parsedError && parsedError.error) {
+                            errorMessage = parsedError.error.message || 'Error tidak diketahui dari script.';
+                        }
+                    } catch (e) {
+                        // Biarkan errorMessage seperti apa adanya jika bukan JSON
+                    }
+                    throw new Error(errorMessage);
+                }
+            }).catch(() => Swal.fire({ icon:'error', title:'Error', background:'#151a23', color:'#fff'}));
         }
-        function getNowTimestamp() {
-            const d = new Date();
-            const date = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
-            const time = `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-            return `${date} ${time}`;
+
+        // --- DASHBOARD, CALENDAR, HISTORY, REPORT (STANDARD) ---
+        function renderDashboard() {
+            const now = new Date();
+            const thisMonthData = rawData.filter(d => {
+                const parts = d.tgl.split(' ')[0].split('/');
+                return parseInt(parts[1]) === (now.getMonth() + 1) && parseInt(parts[2]) === now.getFullYear();
+            });
+            let inc = 0, exp = 0;
+            thisMonthData.forEach(d => { if(d.stat !== 'Libur') { inc += parseInt(d.masuk)||0; exp += parseInt(d.keluar)||0; } });
+            document.getElementById('disp_profit').innerText = "Rp " + (inc-exp).toLocaleString('id-ID');
+            document.getElementById('disp_income').innerText = "Rp " + inc.toLocaleString('id-ID');
+            document.getElementById('disp_expense').innerText = "Rp " + exp.toLocaleString('id-ID');
+            
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            const dataPts = [];
+            for(let i=6; i>=0; i--) {
+                const d = new Date(); d.setDate(d.getDate() - i);
+                const matchDate = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                const sum = rawData.filter(r => r.tgl.startsWith(matchDate) && r.stat === 'Kerja').reduce((a,c) => a + (parseInt(c.masuk)||0), 0);
+                dataPts.push(sum);
+            }
+            if(chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, { type: 'line', data: { labels: ['','','','','','',''], datasets: [{ data: dataPts, borderColor: '#fbbf24', borderWidth: 2, tension:0.4 }] }, options: { plugins:{legend:{display:false}}, scales:{x:{display:false},y:{display:false}} } });
         }
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid'); grid.innerHTML = "";
+            const m = calDate.getMonth(), y = calDate.getFullYear();
+            document.getElementById('calTitle').innerText = `${["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"][m]} ${y}`;
+            ["M","S","S","R","K","J","S"].forEach(d => grid.innerHTML += `<div class="cal-day-name">${d}</div>`);
+            const firstDay = new Date(y, m, 1).getDay();
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            for(let i=0; i<firstDay; i++) grid.innerHTML += `<div></div>`;
+            for(let i=1; i<=daysInMonth; i++) {
+                const dateStr = `${i}/${m+1}/${y}`;
+                const hasWork = rawData.some(d => d.tgl.startsWith(dateStr) && (d.stat==='Kerja'||d.stat==='Hadir'));
+                const hasAbsen = rawData.some(d => d.tgl.startsWith(dateStr) && d.stat==='Absen');
+                let dot = hasAbsen ? '<div class="cal-dot blue"></div>' : (hasWork ? '<div class="cal-dot green"></div>' : '');
+                const dayData = rawData.filter(d => d.tgl.startsWith(dateStr));
+                const el = document.createElement('div');
+                el.className = `cal-day ${i===new Date().getDate()&&m===new Date().getMonth()?'today':''}`;
+                el.innerHTML = `${i}${dot}`;
+                el.onclick = () => openDateDetail(i, m, y, dayData);
+                grid.appendChild(el);
+            }
+        }
+
+        function renderHistory() {
+            const c = document.getElementById('history-container'); c.innerHTML = '';
+            rawData.slice().reverse().slice(0,20).forEach(d => {
+                let color = 'var(--primary)';
+                if (d.stat === 'Absen') color = 'var(--accent)';
+                else if (d.stat === 'Hadir') color = 'var(--success)';
+                else if (parseInt(d.keluar) > 0) color = 'var(--danger)';
+
+                let icon = d.stat==='Absen'?'bx-user-x':(d.stat==='Hadir'?'bx-user-check':'bx-cut');
+                let val = d.masuk > 0 ? `+${d.masuk/1000}k` : (d.keluar > 0 ? `-${d.keluar/1000}k` : d.stat.toUpperCase());
+                c.innerHTML += `<div class="list-item"><div style="display:flex; align-items:center;"><div class="list-icon" style="color:${color}"><i class='bx ${icon}'></i></div><div><div style="font-weight:700;">${d.barber||'Toko'}</div><div style="font-size:0.75rem; color:var(--text-muted)">${d.tgl.split(' ')[0]} • ${d.ket||d.alasan||'-'}</div></div></div><div style="font-weight:700;">${val}</div></div>`;
+            });
+        }
+        
+        function renderReport() {
+            const period = document.getElementById('reportPeriod').value;
+            const now = new Date();
+            const targetMonth = period === 'this_month' ? now.getMonth() + 1 : now.getMonth();
+            const targetYear = now.getFullYear();
+
+            const filteredData = rawData.filter(d => {
+                const parts = d.tgl.split(' ')[0].split('/');
+                return parseInt(parts[1]) === targetMonth && parseInt(parts[2]) === targetYear;
+            });
+
+            let inc = 0, exp = 0;
+            filteredData.forEach(d => {
+                inc += parseInt(d.masuk) || 0;
+                exp += parseInt(d.keluar) || 0;
+            });
+
+            document.getElementById('report_income').innerText = "Rp " + inc.toLocaleString('id-ID');
+            document.getElementById('report_expense').innerText = "Rp " + exp.toLocaleString('id-ID');
+        }
+        function exportToCSV() { Swal.fire('Coming Soon', 'Fitur ekspor CSV akan segera tersedia!', 'info'); }
+        function switchPage(pageId, el) { document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden')); document.getElementById('p-'+pageId).classList.remove('hidden'); document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active')); if(el) el.classList.add('active'); }
+        function changeCalMonth(dir) { calDate.setMonth(calDate.getMonth() + dir); renderCalendar(); }
+        function getNowTimestamp() { const d = new Date(); return `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; }
+
     </script>
 </body>
 </html>
