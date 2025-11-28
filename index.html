@@ -721,6 +721,22 @@
             });
 
             if (formValues) {
+                // Cek apakah karyawan sudah absen atau hadir hari ini
+                const today = new Date();
+                const todayKey = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+                const todaysTransactions = transactionsByDate.get(todayKey) || [];
+                
+                const existingRecord = todaysTransactions.find(t => t.barber === formValues.staff && (t.stat === 'Hadir' || t.stat === 'Absen'));
+
+                if (existingRecord) {
+                    Swal.fire({
+                        icon: 'warning', title: 'Sudah Tercatat',
+                        text: `${formValues.staff} sudah tercatat '${existingRecord.stat}' hari ini.`,
+                        background: '#151a23', color: '#fff'
+                    });
+                    return; // Hentikan proses jika sudah ada data
+                }
+
                 const staffData = staffList.find(s => s.name === formValues.staff);
                 if(staffData && staffData.pin) {
                     const { value: pin } = await Swal.fire({ title: `PIN ${formValues.staff}`, input: 'password', background: '#151a23', color: '#fff', confirmButtonColor: '#3b82f6' });
